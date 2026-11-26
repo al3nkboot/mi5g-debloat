@@ -50,6 +50,9 @@
 
     <string name="about_version">Version %1$s</string>
     <string name="about_by">By @midroid5G</string>
+    <string name="language_title">Language</string>
+    <string name="language_arabic">Arabic</string>
+    <string name="language_english">English</string>
     <string name="about_support">Support</string>
     <string name="about_credit">Inspired by Android Phones Debloat Prompt by beebom-team (MIT License)</string>
     <string name="about_independent">The safe list is our own list, curated independently.</string>
@@ -72,6 +75,18 @@
     <string name="reason_diagmon">Samsung diagnostic monitoring/analytics</string>
     <string name="reason_ms_appmanager">Link to Windows preinstalled stub</string>
     <string name="reason_netflix_activation">Netflix partner activation stub</string>
+    <string name="reason_heytap_pictorial">Lock Screen Magazine, the rotating lock-screen wallpaper/feed on OPPO/realme (on some phones the wallpaper may need to be set again)</string>
+    <string name="reason_heytap_market">HeyTap App Market; not needed if you use Google Play</string>
+    <string name="reason_oppo_market">older Oppo/realme App Market package</string>
+    <string name="reason_nearme_browser">older ColorOS/HeyTap browser (duplicate of Chrome)</string>
+    <string name="reason_oplus_games">Games / Game Space hub and in-game toolbox (games themselves still work)</string>
+    <string name="reason_gamespaceui">older ColorOS Game Space UI and in-game toolbar</string>
+    <string name="reason_gamespace">older ColorOS Game Space</string>
+    <string name="reason_heytap_themestore">HeyTap Theme Store (themes already applied may revert)</string>
+    <string name="reason_oplus_themestore">Theme Store (current oplus package)</string>
+    <string name="reason_nearme_themespace">legacy realme Theme Store</string>
+    <string name="reason_nearme_themestore">older realme Theme Store package</string>
+    <string name="reason_realme_community">official realme Community forum app</string>
 
     <string name="url_shizuku_download" translatable="false">https://shizuku.rikka.app/download/</string>
     <string name="url_paypal" translatable="false">https://paypal.me/Midroid5G</string>

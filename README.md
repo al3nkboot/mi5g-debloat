@@ -24,9 +24,15 @@ Distributed via GitHub, not Google Play.
 5. Use the **Log** screen to see what was removed and tap **Restore** (or **Restore all**)
    to undo. Restoration also needs Shizuku.
 
-The safe list is intentionally small and is **our own list, curated independently**.
-Each entry shows a one-line reason. The app never removes packages outside that list,
-and refuses system-critical prefixes even if they appear on a custom list.
+The safe list is **our own list, curated independently**. In addition to the original
+entries, it now covers common realme/ColorOS/OPPO HeyTap packages such as Lock Screen
+Magazine, App Market, Game Space, Theme Store and realme Community. Each entry shows a
+one-line reason. The app never removes packages outside that list, and refuses
+system-critical prefixes even if they appear on a custom list.
+
+The app opens in Arabic (RTL) by default even if the phone's system language is English.
+Use the language action on the home bar, or the language row on the **About** screen,
+to switch between Arabic and English.
 
 ## Safety notes
 

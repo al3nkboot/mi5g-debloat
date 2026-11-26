@@ -49,6 +49,9 @@
 
     <string name="about_version">الإصدار %1$s</string>
     <string name="about_by">بواسطة @midroid5G</string>
+    <string name="language_title">اللغة</string>
+    <string name="language_arabic">العربية</string>
+    <string name="language_english">الإنجليزية</string>
     <string name="about_support">الدعم</string>
     <string name="about_credit">مستوحى من Android Phones Debloat Prompt بواسطة beebom-team (ترخيص MIT)</string>
     <string name="about_independent">قائمة التطبيقات الآمنة خاصة بنا، وقد أعددناها بشكل مستقل.</string>
@@ -71,4 +74,16 @@
     <string name="reason_diagmon">مراقبة وتحليلات تشخيص Samsung</string>
     <string name="reason_ms_appmanager">مكوّن Link to Windows المثبّت مسبقًا</string>
     <string name="reason_netflix_activation">مكوّن تفعيل شركاء Netflix</string>
+    <string name="reason_heytap_pictorial">Lock Screen Magazine، خلفية شاشة القفل المتغيرة وخلاصة المحتوى على هواتف OPPO/realme (قد يلزم إعادة تعيين الخلفية على بعض الهواتف)</string>
+    <string name="reason_heytap_market">HeyTap App Market؛ غير ضروري إذا كنت تستخدم Google Play</string>
+    <string name="reason_oppo_market">حزمة App Market القديمة من Oppo/realme</string>
+    <string name="reason_nearme_browser">متصفح ColorOS/HeyTap القديم (مكرر من Chrome)</string>
+    <string name="reason_oplus_games">مركز الألعاب Game Space وأدوات أثناء اللعب (الألعاب نفسها تستمر في العمل)</string>
+    <string name="reason_gamespaceui">واجهة Game Space القديمة من ColorOS وشريط الأدوات أثناء اللعب</string>
+    <string name="reason_gamespace">Game Space القديم من ColorOS</string>
+    <string name="reason_heytap_themestore">HeyTap Theme Store (قد تعود الثيمات المطبقة إلى حالتها الأصلية)</string>
+    <string name="reason_oplus_themestore">Theme Store (حزمة oplus الحالية)</string>
+    <string name="reason_nearme_themespace">متجر Theme Store القديم من realme</string>
+    <string name="reason_nearme_themestore">حزمة Theme Store القديمة من realme</string>
+    <string name="reason_realme_community">تطبيق realme Community الرسمي للمنتدى</string>
 </resources>

@@ -2,14 +2,18 @@
 
 package com.midroid.debloat
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +24,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,8 +39,12 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.core.os.LocaleListCompat
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,8 +62,15 @@ import com.midroid.debloat.ui.MainViewModel
 import com.midroid.debloat.ui.Screen
 import java.text.DateFormat
 import java.util.Date
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
+    override fun attachBaseContext(newBase: Context) {
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(Locale.forLanguageTag(currentLanguageTag()))
+        super.attachBaseContext(newBase.createConfigurationContext(config))
+    }
+
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         setContent { DebloatTheme { MainScreen() } }
@@ -75,6 +92,79 @@ fun DebloatTheme(content: @Composable () -> Unit) {
 
 private fun openUrl(context: Context, res: Int) {
     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(res))))
+}
+
+private fun currentLanguageTag(): String =
+    if (AppCompatDelegate.getApplicationLocales().toLanguageTags().startsWith("en")) "en" else "ar"
+
+private fun chooseLanguage(context: Context, tag: String) {
+    AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
+    var base = context
+    while (base is ContextWrapper) base = base.baseContext
+    (base as? Activity)?.recreate()
+}
+
+@Composable
+private fun LanguageChoice(label: String, selected: Boolean, onClick: () -> Unit) {
+    TextButton(onClick = onClick) {
+        Text(
+            label,
+            color = if (selected) MaterialTheme.colorScheme.primary else Color.Unspecified,
+        )
+    }
+}
+
+@Composable
+private fun LanguageRow() {
+    val context = LocalContext.current
+    var current by remember { mutableStateOf(currentLanguageTag()) }
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Text(stringResource(R.string.language_title), style = MaterialTheme.typography.titleSmall)
+        LanguageChoice(stringResource(R.string.language_arabic), current == "ar") {
+            chooseLanguage(context, "ar")
+            current = "ar"
+        }
+        LanguageChoice(stringResource(R.string.language_english), current == "en") {
+            chooseLanguage(context, "en")
+            current = "en"
+        }
+    }
+}
+
+@Composable
+private fun LanguageMenu() {
+    val context = LocalContext.current
+    var expanded by remember { mutableStateOf(false) }
+    var current by remember { mutableStateOf(currentLanguageTag()) }
+    TextButton(onClick = { expanded = true }) { Text(stringResource(R.string.language_title)) }
+    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+        DropdownMenuItem(
+            text = {
+                Text(
+                    stringResource(R.string.language_arabic),
+                    color = if (current == "ar") MaterialTheme.colorScheme.primary else Color.Unspecified,
+                )
+            },
+            onClick = {
+                chooseLanguage(context, "ar")
+                current = "ar"
+                expanded = false
+            },
+        )
+        DropdownMenuItem(
+            text = {
+                Text(
+                    stringResource(R.string.language_english),
+                    color = if (current == "en") MaterialTheme.colorScheme.primary else Color.Unspecified,
+                )
+            },
+            onClick = {
+                chooseLanguage(context, "en")
+                current = "en"
+                expanded = false
+            },
+        )
+    }
 }
 
 @Composable
@@ -102,6 +192,7 @@ private fun HomeScreen(vm: MainViewModel) {
         TopAppBar(
             title = { Text(stringResource(R.string.app_name)) },
             actions = {
+                LanguageMenu()
                 TextButton(onClick = vm::showLog) { Text(stringResource(R.string.nav_log)) }
                 TextButton(onClick = vm::showAbout) { Text(stringResource(R.string.nav_about)) }
             },
@@ -321,6 +412,8 @@ private fun AboutScreen(vm: MainViewModel) {
         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineMedium)
         Text(stringResource(R.string.about_version, version))
         Text(stringResource(R.string.about_by))
+        Spacer(Modifier.height(12.dp))
+        LanguageRow()
         Spacer(Modifier.height(12.dp))
         Text(stringResource(R.string.about_support))
         LinkText(stringResource(R.string.url_paypal))

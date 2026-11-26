@@ -46,6 +46,24 @@ class ClassifierTest {
     }
 
     @Test
+    fun newlyAddedPackagesAreSafe() {
+        listOf(
+            "com.heytap.pictorial",
+            "com.heytap.market",
+            "com.oppo.market",
+            "com.nearme.browser",
+            "com.oplus.games",
+            "com.coloros.gamespaceui",
+            "com.coloros.gamespace",
+            "com.heytap.themestore",
+            "com.oplus.themestore",
+            "com.nearme.themespace",
+            "com.nearme.themestore",
+            "com.realmecomm.app",
+        ).forEach { assertEquals(Group.SAFE, classify(it, true, self)) }
+    }
+
+    @Test
     fun realSafeListIsClean() {
         val pkgs = SAFE_LIST.map { it.pkg }
         assertEquals(pkgs.size, pkgs.toSet().size)
