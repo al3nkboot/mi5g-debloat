@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">إزالة التطبيقات الزائدة</string>
+    <string name="nav_log">السجل</string>
+    <string name="nav_about">حول</string>
+    <string name="back">رجوع</string>
+
+    <string name="shizuku_not_installed">Shizuku غير مثبت</string>
+    <string name="shizuku_not_running">Shizuku غير قيد التشغيل</string>
+    <string name="shizuku_needs_permission">مطلوب إذن Shizuku</string>
+    <string name="shizuku_ready">Shizuku جاهز</string>
+    <string name="shizuku_not_installed_hint">ثبّت Shizuku لإزالة التطبيقات دون صلاحيات الجذر.</string>
+    <string name="shizuku_not_running_hint">افتح Shizuku وابدأ الخدمة.</string>
+    <string name="shizuku_needs_permission_hint">امنح إذن Shizuku للمتابعة.</string>
+    <string name="shizuku_ready_hint">جاهز. افحص ثم اختر التطبيقات لإزالتها.</string>
+    <string name="install_shizuku">تثبيت Shizuku</string>
+    <string name="open_shizuku">فتح Shizuku</string>
+    <string name="grant_permission">منح الإذن</string>
+    <string name="permission_denied">لم يتم منح إذن Shizuku.</string>
+
+    <string name="scan">فحص</string>
+    <string name="scan_hint">الفحص لا يتطلب Shizuku، أما الإزالة فتتطلبه.</string>
+    <string name="scanned_count">تم العثور على %1$d تطبيقًا</string>
+    <string name="tab_safe">آمنة (%1$d)</string>
+    <string name="tab_user">تطبيقات المستخدم (%1$d)</string>
+    <string name="tab_protected">محمية (%1$d)</string>
+    <string name="select_all">تحديد الكل</string>
+    <string name="remove_selected">إزالة المحدد (%1$d)</string>
+    <string name="user_info">هذه على الأرجح تطبيقاتك — لن يتم لمسها.</string>
+    <string name="protected_info">تطبيقات نظام حيوية أو غير معروفة — لا يمكن إزالتها هنا أبدًا.</string>
+
+    <string name="confirm_title">تأكيد الإزالة</string>
+    <string name="confirm_message">إزالة %1$d تطبيق؟ يمكنك التراجع من شاشة السجل.</string>
+    <string name="more_items">و%1$d أخرى</string>
+    <string name="confirm">تأكيد</string>
+    <string name="cancel">إلغاء</string>
+    <string name="result_removed_failed">تمت إزالة %1$d، وفشل %2$d</string>
+    <string name="result_restored">تمت استعادة تطبيق واحد</string>
+    <string name="result_restore_failed">فشلت الاستعادة</string>
+    <string name="result_restored_failed">تمت استعادة %1$d، وفشل %2$d</string>
+
+    <string name="log_title">سجل الإزالة</string>
+    <string name="log_empty">لم تتم إزالة أي تطبيق بعد.</string>
+    <string name="restore">استعادة</string>
+    <string name="restore_all">استعادة الكل</string>
+    <string name="restored">مُستعاد</string>
+    <string name="removed">مُزال</string>
+    <string name="log_entry">%1$s\n%2$s — %3$s</string>
+
+    <string name="about_version">الإصدار %1$s</string>
+    <string name="about_by">بواسطة @midroid5G</string>
+    <string name="about_support">الدعم</string>
+    <string name="about_credit">مستوحى من Android Phones Debloat Prompt بواسطة beebom-team (ترخيص MIT)</string>
+    <string name="about_independent">قائمة التطبيقات الآمنة خاصة بنا، وقد أعددناها بشكل مستقل.</string>
+    <string name="about_disclaimer">الإزالة تنطبق على المستخدم الحالي فقط ويمكن التراجع عنها عبر الاستعادة. الاستخدام على مسؤوليتك.</string>
+
+    <string name="reason_glance">خلاصة شاشة القفل والإعلانات Glance (إصدارات Realme وOppo وXiaomi وSamsung)</string>
+    <string name="reason_fb_appmanager">مكوّن Facebook App Manager، يثبّت Facebook ويحدّثه بصمت</string>
+    <string name="reason_fb_services">مكوّن خدمات Facebook الخلفية</string>
+    <string name="reason_fb_system">مكوّن Facebook النظامي</string>
+    <string name="reason_fb_katana">تطبيق Facebook المثبّت مسبقًا (فقط إذا كنت لا تستخدمه)</string>
+    <string name="reason_miui_analytics">تحليلات وقياس عن بُعد من Xiaomi</string>
+    <string name="reason_miui_msa">خدمة الإعلانات Xiaomi MSA (إعلانات النظام)</string>
+    <string name="reason_miui_bugreport">جامع تقارير الأخطاء من Xiaomi</string>
+    <string name="reason_xiaomi_glgm">مجلد ترويج ألعاب Xiaomi</string>
+    <string name="reason_heytap_browser">متصفح OPPO/Realme المثبّت مسبقًا (مكرر لـ Chrome)</string>
+    <string name="reason_nearme_gamecenter">ترويج مركز ألعاب OPPO/Realme</string>
+    <string name="reason_bixby">مساعد Samsung Bixby الصوتي</string>
+    <string name="reason_spage">Samsung Free (خلاصة أخبار وإعلانات)</string>
+    <string name="reason_rubin">خدمة تخصيص Samsung، تحليلات الاستخدام</string>
+    <string name="reason_diagmon">مراقبة وتحليلات تشخيص Samsung</string>
+    <string name="reason_ms_appmanager">مكوّن Link to Windows المثبّت مسبقًا</string>
+    <string name="reason_netflix_activation">مكوّن تفعيل شركاء Netflix</string>
+</resources>

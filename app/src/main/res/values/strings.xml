@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Mi5G Debloat</string>
+    <string name="nav_log">Log</string>
+    <string name="nav_about">About</string>
+    <string name="back">Back</string>
+
+    <string name="shizuku_not_installed">Shizuku not installed</string>
+    <string name="shizuku_not_running">Shizuku not running</string>
+    <string name="shizuku_needs_permission">Shizuku permission needed</string>
+    <string name="shizuku_ready">Shizuku ready</string>
+    <string name="shizuku_not_installed_hint">Install Shizuku to remove apps without root access.</string>
+    <string name="shizuku_not_running_hint">Open Shizuku and start the service.</string>
+    <string name="shizuku_needs_permission_hint">Grant the Shizuku permission to continue.</string>
+    <string name="shizuku_ready_hint">Ready. Scan, then choose apps to remove.</string>
+    <string name="install_shizuku">Install Shizuku</string>
+    <string name="open_shizuku">Open Shizuku</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="permission_denied">Shizuku permission was not granted.</string>
+
+    <string name="scan">Scan</string>
+    <string name="scan_hint">Scanning needs no Shizuku; removal does.</string>
+    <string name="scanned_count">Found %1$d apps</string>
+    <string name="tab_safe">Safe (%1$d)</string>
+    <string name="tab_user">User apps (%1$d)</string>
+    <string name="tab_protected">Protected (%1$d)</string>
+    <string name="select_all">Select all</string>
+    <string name="remove_selected">Remove selected (%1$d)</string>
+    <string name="user_info">These are probably your own apps — not touched.</string>
+    <string name="protected_info">System-critical or unknown system apps — never removable here.</string>
+
+    <string name="confirm_title">Confirm removal</string>
+    <string name="confirm_message">Remove %1$d app(s)? You can undo this from the Log screen.</string>
+    <string name="more_items">and %1$d more</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="result_removed_failed">Removed %1$d, failed %2$d</string>
+    <string name="result_restored">Restored 1 app</string>
+    <string name="result_restore_failed">Restore failed</string>
+    <string name="result_restored_failed">Restored %1$d, failed %2$d</string>
+    <string name="check_mark" translatable="false">✓</string>
+
+    <string name="log_title">Removal log</string>
+    <string name="log_empty">Nothing removed yet.</string>
+    <string name="restore">Restore</string>
+    <string name="restore_all">Restore all</string>
+    <string name="restored">Restored</string>
+    <string name="removed">Removed</string>
+    <string name="log_entry">%1$s\n%2$s — %3$s</string>
+
+    <string name="about_version">Version %1$s</string>
+    <string name="about_by">By @midroid5G</string>
+    <string name="about_support">Support</string>
+    <string name="about_credit">Inspired by Android Phones Debloat Prompt by beebom-team (MIT License)</string>
+    <string name="about_independent">The safe list is our own list, curated independently.</string>
+    <string name="about_disclaimer">Removal applies to the current user only and is reversible via Restore. Use at your own risk.</string>
+
+    <string name="reason_glance">Glance lock-screen feed/ads (Realme/Oppo/Xiaomi/Samsung variants)</string>
+    <string name="reason_fb_appmanager">Facebook App Manager stub, installs/updates Facebook silently</string>
+    <string name="reason_fb_services">Facebook background services stub</string>
+    <string name="reason_fb_system">Facebook system stub</string>
+    <string name="reason_fb_katana">Preinstalled Facebook app (only if you don\'t use it)</string>
+    <string name="reason_miui_analytics">Xiaomi analytics/telemetry</string>
+    <string name="reason_miui_msa">Xiaomi MSA ad service (system ads)</string>
+    <string name="reason_miui_bugreport">Xiaomi bug report collector</string>
+    <string name="reason_xiaomi_glgm">Xiaomi Games promo folder</string>
+    <string name="reason_heytap_browser">OPPO/Realme preinstalled browser (duplicate of Chrome)</string>
+    <string name="reason_nearme_gamecenter">OPPO/Realme Game Center promo</string>
+    <string name="reason_bixby">Samsung Bixby voice assistant</string>
+    <string name="reason_spage">Samsung Free (news/ads feed)</string>
+    <string name="reason_rubin">Samsung Customization Service, usage analytics</string>
+    <string name="reason_diagmon">Samsung diagnostic monitoring/analytics</string>
+    <string name="reason_ms_appmanager">Link to Windows preinstalled stub</string>
+    <string name="reason_netflix_activation">Netflix partner activation stub</string>
+
+    <string name="url_shizuku_download" translatable="false">https://shizuku.rikka.app/download/</string>
+    <string name="url_paypal" translatable="false">https://paypal.me/Midroid5G</string>
+    <string name="url_credit" translatable="false">https://github.com/beebom-team/android-debloat-prompt</string>
+</resources>
