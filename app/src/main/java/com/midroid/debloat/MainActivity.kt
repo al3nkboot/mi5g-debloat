@@ -4,6 +4,7 @@ package com.midroid.debloat
 
 import android.app.Activity
 import android.app.Application
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -57,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.midroid.debloat.data.AppItem
 import com.midroid.debloat.data.Group
+import com.midroid.debloat.data.LogAction
 import com.midroid.debloat.shizuku.ShizukuState
 import com.midroid.debloat.ui.MainViewModel
 import com.midroid.debloat.ui.Screen
@@ -92,6 +94,16 @@ fun DebloatTheme(content: @Composable () -> Unit) {
 
 private fun openUrl(context: Context, res: Int) {
     context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(res))))
+}
+
+private fun openPlayStore(context: Context, pkg: String) {
+    val market = "market://details?id=$pkg"
+    val web = "https://play.google.com/store/apps/details?id=$pkg"
+    try {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(market)))
+    } catch (e: ActivityNotFoundException) {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(web)))
+    }
 }
 
 private fun currentLanguageTag(): String =
@@ -206,7 +218,7 @@ private fun HomeScreen(vm: MainViewModel) {
         Button(onClick = vm::scan, modifier = Modifier.padding(16.dp)) {
             Text(stringResource(R.string.scan))
         }
-        vm.message?.let {
+        vm.homeMessage?.let {
             Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp))
         }
         SecondaryTabRow(selectedTabIndex = tab.intValue) {
@@ -354,6 +366,7 @@ private fun ConfirmDialog(vm: MainViewModel) {
 
 @Composable
 private fun LogScreen(vm: MainViewModel) {
+    val context = LocalContext.current
     val labels = remember(vm.items) { vm.items.associate { it.pkg to it.label } }
     val pending = vm.logEntries.count { !it.restored }
     Column(Modifier.fillMaxSize()) {
@@ -366,7 +379,7 @@ private fun LogScreen(vm: MainViewModel) {
             enabled = vm.state == ShizukuState.READY && pending > 0 && !vm.busy,
             modifier = Modifier.fillMaxWidth().padding(16.dp),
         ) { Text(stringResource(R.string.restore_all)) }
-        vm.message?.let {
+        vm.logMessage?.let {
             Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp))
         }
         if (vm.logEntries.isEmpty()) {
@@ -377,12 +390,27 @@ private fun LogScreen(vm: MainViewModel) {
                     val date = remember(entry.timeMillis) {
                         DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(entry.timeMillis))
                     }
-                    val status = stringResource(if (entry.restored) R.string.restored else R.string.removed)
+                    val status = stringResource(
+                        when {
+                            entry.restored -> R.string.restored
+                            entry.action == LogAction.DISABLED -> R.string.disabled
+                            else -> R.string.removed
+                        }
+                    )
                     Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
                         Text(stringResource(R.string.log_entry, labels[entry.pkg] ?: entry.pkg, date, status))
                         if (!entry.restored) {
                             Button(onClick = { vm.restore(entry.pkg) }, enabled = !vm.busy) {
                                 Text(stringResource(R.string.restore))
+                            }
+                        }
+                        if (entry.pkg in vm.logFailedPkgs) {
+                            Text(
+                                stringResource(R.string.restore_play_hint),
+                                style = MaterialTheme.typography.bodySmall,
+                            )
+                            Button(onClick = { openPlayStore(context, entry.pkg) }) {
+                                Text(stringResource(R.string.open_play_store))
                             }
                         }
                     }

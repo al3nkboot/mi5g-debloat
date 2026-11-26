@@ -1,17 +1,22 @@
 package com.midroid.debloat.ui
 
 import android.app.Application
+import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Configuration
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.midroid.debloat.R
+import com.midroid.debloat.data.ActionResult
 import com.midroid.debloat.data.AppItem
 import com.midroid.debloat.data.Debloater
 import com.midroid.debloat.data.Group
 import com.midroid.debloat.data.LogEntry
+import com.midroid.debloat.data.Outcome
 import com.midroid.debloat.data.RemovalLog
 import com.midroid.debloat.data.scan as scanApps
 import com.midroid.debloat.shizuku.ShizukuRunner
@@ -23,6 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
 import java.io.File
+import java.util.Locale
 
 private const val PERMISSION_CODE = 42
 
@@ -42,7 +48,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var busy by mutableStateOf(false)
         private set
-    var message by mutableStateOf<String?>(null)
+    var homeMessage by mutableStateOf<String?>(null)
+        private set
+    var logMessage by mutableStateOf<String?>(null)
+        private set
+    var logFailedPkgs by mutableStateOf<List<String>>(emptyList())
         private set
     var logEntries by mutableStateOf<List<LogEntry>>(emptyList())
         private set
@@ -52,7 +62,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val binderReceived = Shizuku.OnBinderReceivedListener { refresh() }
     private val binderDead = Shizuku.OnBinderDeadListener { refresh() }
     private val permissionResult = Shizuku.OnRequestPermissionResultListener { _, grant ->
-        if (grant != PackageManager.PERMISSION_GRANTED) message = text(R.string.permission_denied)
+        if (grant != PackageManager.PERMISSION_GRANTED) homeMessage = text(R.string.permission_denied)
         refresh()
     }
 
@@ -71,7 +81,22 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         super.onCleared()
     }
 
-    private fun text(res: Int, vararg args: Any): String = getApplication<Application>().getString(res, *args)
+    // Compose's stringResource follows the app locale; getString on the plain application
+    // context does not. Build a configuration context for the same locale in the ViewModel.
+    private fun localized(): Context {
+        val app = getApplication<Application>()
+        val tags = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+        val tag = if (tags.isEmpty()) "ar" else tags.substringBefore(",")
+        val config = Configuration(app.resources.configuration)
+        config.setLocale(Locale.forLanguageTag(tag))
+        return app.createConfigurationContext(config)
+    }
+
+    private fun text(res: Int, vararg args: Any): String = localized().getString(res, *args)
+
+    private fun count(res: Int, n: Int): String = localized().resources.getQuantityString(res, n, n)
+
+    private fun label(pkg: String): String = items.firstOrNull { it.pkg == pkg }?.label ?: pkg
 
     fun refresh() {
         state = shizukuState(getApplication())
@@ -80,7 +105,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun requestPermission() = requestShizukuPermission(PERMISSION_CODE)
 
     fun showHome() { screen = Screen.HOME }
-    fun showLog() { screen = Screen.LOG; refreshLog() }
+    fun showLog() {
+        screen = Screen.LOG
+        refreshLog()
+        logMessage = null
+        logFailedPkgs = emptyList()
+    }
     fun showAbout() { screen = Screen.ABOUT }
 
     private fun reload() {
@@ -90,7 +120,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun scan() {
         reload()
-        message = text(R.string.scanned_count, items.size)
+        homeMessage = count(R.plurals.scanned_count, items.size)
     }
 
     fun toggle(pkg: String) {
@@ -109,13 +139,23 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (busy || state != ShizukuState.READY || pkgs.isEmpty()) return
         busy = true
         viewModelScope.launch {
-            val (ok, failed) = withContext(Dispatchers.IO) {
-                var ok = 0
-                var failed = 0
-                pkgs.forEach { if (debloater.remove(it, Group.SAFE).isSuccess) ok++ else failed++ }
-                ok to failed
+            val results = withContext(Dispatchers.IO) { pkgs.map { debloater.remove(it, Group.SAFE) } }
+            val parts = mutableListOf<String>()
+            val removed = results.count { it.outcome == Outcome.UNINSTALLED }
+            val disabled = results.count { it.outcome == Outcome.DISABLED }
+            val failed = results.count { it.outcome == Outcome.FAILED }
+            if (removed > 0) parts += count(R.plurals.removed_count, removed)
+            if (disabled > 0) parts += count(R.plurals.disabled_count, disabled)
+            if (failed > 0) parts += count(R.plurals.failed_count, failed)
+            results.forEach { result ->
+                parts += when (result.outcome) {
+                    Outcome.UNINSTALLED -> text(R.string.result_pkg_uninstalled, label(result.pkg))
+                    Outcome.DISABLED -> text(R.string.result_pkg_disabled, label(result.pkg), result.detail)
+                    Outcome.FAILED -> text(R.string.result_pkg_failed, label(result.pkg), result.detail)
+                    Outcome.RESTORED -> text(R.string.result_pkg_restored, label(result.pkg))
+                }
             }
-            message = text(R.string.result_removed_failed, ok, failed)
+            homeMessage = parts.joinToString("\n")
             confirmRemove = false
             refreshLog()
             reload()
@@ -123,12 +163,29 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    private fun restoreMessage(results: List<ActionResult>): String {
+        val parts = mutableListOf<String>()
+        val restored = results.count { it.outcome == Outcome.RESTORED }
+        val failed = results.count { it.outcome == Outcome.FAILED }
+        if (restored > 0) parts += count(R.plurals.restored_count, restored)
+        if (failed > 0) parts += count(R.plurals.failed_count, failed)
+        results.forEach { result ->
+            parts += when (result.outcome) {
+                Outcome.RESTORED -> text(R.string.result_pkg_restored, label(result.pkg))
+                Outcome.FAILED -> text(R.string.result_pkg_restore_failed, label(result.pkg), result.detail)
+                else -> text(R.string.result_pkg_failed, label(result.pkg), result.detail)
+            }
+        }
+        return parts.joinToString("\n")
+    }
+
     fun restore(pkg: String) {
         if (busy) return
         busy = true
         viewModelScope.launch {
-            val ok = withContext(Dispatchers.IO) { debloater.restore(pkg).isSuccess }
-            message = text(if (ok) R.string.result_restored else R.string.result_restore_failed)
+            val result = withContext(Dispatchers.IO) { debloater.restore(pkg) }
+            logMessage = restoreMessage(listOf(result))
+            logFailedPkgs = if (result.outcome == Outcome.FAILED) listOf(pkg) else emptyList()
             refreshLog()
             reload()
             busy = false
@@ -140,13 +197,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (busy || state != ShizukuState.READY || pending.isEmpty()) return
         busy = true
         viewModelScope.launch {
-            val (ok, failed) = withContext(Dispatchers.IO) {
-                var ok = 0
-                var failed = 0
-                debloater.restoreAll().forEach { if (it.second.isSuccess) ok++ else failed++ }
-                ok to failed
-            }
-            message = text(R.string.result_restored_failed, ok, failed)
+            val results = withContext(Dispatchers.IO) { debloater.restoreAll() }
+            logMessage = restoreMessage(results)
+            logFailedPkgs = results.filter { it.outcome == Outcome.FAILED }.map { it.pkg }
             refreshLog()
             reload()
             busy = false

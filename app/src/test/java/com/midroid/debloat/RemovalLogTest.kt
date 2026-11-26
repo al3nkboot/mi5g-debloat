@@ -1,5 +1,6 @@
 package com.midroid.debloat
 
+import com.midroid.debloat.data.LogAction
 import com.midroid.debloat.data.LogEntry
 import com.midroid.debloat.data.RemovalLog
 import org.junit.Assert.assertEquals
@@ -14,28 +15,45 @@ class RemovalLogTest {
     fun addAndReadRoundTrip() {
         val file = tempFile()
         val log = RemovalLog(file)
-        log.add("com.example.one", 1000L)
-        assertEquals(listOf(LogEntry("com.example.one", 1000L, false)), log.entries())
-        assertEquals(listOf(LogEntry("com.example.one", 1000L, false)), RemovalLog(file).entries())
+        log.add("com.example.one", now = 1000L)
+        assertEquals(listOf(LogEntry("com.example.one", 1000L, false, LogAction.UNINSTALLED)), log.entries())
+        assertEquals(listOf(LogEntry("com.example.one", 1000L, false, LogAction.UNINSTALLED)), RemovalLog(file).entries())
+    }
+
+    @Test
+    fun disabledActionRoundTrips() {
+        val file = tempFile()
+        val log = RemovalLog(file)
+        log.add("com.example.one", LogAction.DISABLED, now = 1000L)
+        assertEquals(LogAction.DISABLED, RemovalLog(file).entries().single().action)
+    }
+
+    @Test
+    fun entryWithoutActionReadsAsUninstalled() {
+        val file = tempFile()
+        file.writeText("""[{"pkg":"com.example.one","timeMillis":1000,"restored":false}]""")
+        assertEquals(LogAction.UNINSTALLED, RemovalLog(file).entries().single().action)
+        file.writeText("""[{"pkg":"com.example.two","timeMillis":1000,"restored":false,"action":"odd"}]""")
+        assertEquals(LogAction.UNINSTALLED, RemovalLog(file).entries().single().action)
     }
 
     @Test
     fun reAddReplacesAndResetsRestored() {
         val log = RemovalLog(tempFile())
-        log.add("com.example.one", 1000L)
+        log.add("com.example.one", now = 1000L)
         log.markRestored("com.example.one")
         assertEquals(emptyList<LogEntry>(), log.pending())
 
-        log.add("com.example.one", 2000L)
-        assertEquals(listOf(LogEntry("com.example.one", 2000L, false)), log.entries())
+        log.add("com.example.one", now = 2000L)
+        assertEquals(listOf(LogEntry("com.example.one", 2000L, false, LogAction.UNINSTALLED)), log.entries())
         assertEquals(1, log.pending().size)
     }
 
     @Test
     fun markRestoredOnlyTouchesMatchingPackage() {
         val log = RemovalLog(tempFile())
-        log.add("com.example.one", 1L)
-        log.add("com.example.two", 2L)
+        log.add("com.example.one", now = 1L)
+        log.add("com.example.two", now = 2L)
         log.markRestored("com.example.one")
         assertEquals(listOf("com.example.two"), log.pending().map { it.pkg })
     }
@@ -53,7 +71,7 @@ class RemovalLogTest {
         file.writeText("{not json at all")
         val log = RemovalLog(file)
         assertEquals(emptyList<LogEntry>(), log.entries())
-        log.add("com.example.one", 5L)
+        log.add("com.example.one", now = 5L)
         assertEquals(listOf("com.example.one"), log.entries().map { it.pkg })
         assertTrue(file.readText().contains("com.example.one"))
     }

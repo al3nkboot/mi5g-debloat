@@ -20,7 +20,14 @@
 
     <string name="scan">فحص</string>
     <string name="scan_hint">الفحص لا يتطلب Shizuku، أما الإزالة فتتطلبه.</string>
-    <string name="scanned_count">تم العثور على %1$d تطبيقًا</string>
+    <plurals name="scanned_count">
+        <item quantity="zero">لم يتم العثور على %d تطبيق</item>
+        <item quantity="one">تم العثور على %d تطبيق</item>
+        <item quantity="two">تم العثور على %d تطبيقين</item>
+        <item quantity="few">تم العثور على %d تطبيقات</item>
+        <item quantity="many">تم العثور على %d تطبيقًا</item>
+        <item quantity="other">تم العثور على %d تطبيق</item>
+    </plurals>
     <string name="tab_safe">آمنة (%1$d)</string>
     <string name="tab_user">تطبيقات المستخدم (%1$d)</string>
     <string name="tab_protected">محمية (%1$d)</string>
@@ -34,10 +41,43 @@
     <string name="more_items">و%1$d أخرى</string>
     <string name="confirm">تأكيد</string>
     <string name="cancel">إلغاء</string>
-    <string name="result_removed_failed">تمت إزالة %1$d، وفشل %2$d</string>
-    <string name="result_restored">تمت استعادة تطبيق واحد</string>
-    <string name="result_restore_failed">فشلت الاستعادة</string>
-    <string name="result_restored_failed">تمت استعادة %1$d، وفشل %2$d</string>
+    <plurals name="removed_count">
+        <item quantity="zero">تمت إزالة %d تطبيق</item>
+        <item quantity="one">تمت إزالة %d تطبيق</item>
+        <item quantity="two">تمت إزالة %d تطبيقين</item>
+        <item quantity="few">تمت إزالة %d تطبيقات</item>
+        <item quantity="many">تمت إزالة %d تطبيقًا</item>
+        <item quantity="other">تمت إزالة %d تطبيق</item>
+    </plurals>
+    <plurals name="disabled_count">
+        <item quantity="zero">تم تعطيل %d تطبيق</item>
+        <item quantity="one">تم تعطيل %d تطبيق</item>
+        <item quantity="two">تم تعطيل %d تطبيقين</item>
+        <item quantity="few">تم تعطيل %d تطبيقات</item>
+        <item quantity="many">تم تعطيل %d تطبيقًا</item>
+        <item quantity="other">تم تعطيل %d تطبيق</item>
+    </plurals>
+    <plurals name="failed_count">
+        <item quantity="zero">فشل %d</item>
+        <item quantity="one">فشل %d</item>
+        <item quantity="two">فشل %d</item>
+        <item quantity="few">فشل %d</item>
+        <item quantity="many">فشل %d</item>
+        <item quantity="other">فشل %d</item>
+    </plurals>
+    <plurals name="restored_count">
+        <item quantity="zero">تمت استعادة %d تطبيق</item>
+        <item quantity="one">تمت استعادة %d تطبيق</item>
+        <item quantity="two">تمت استعادة %d تطبيقين</item>
+        <item quantity="few">تمت استعادة %d تطبيقات</item>
+        <item quantity="many">تمت استعادة %d تطبيقًا</item>
+        <item quantity="other">تمت استعادة %d تطبيق</item>
+    </plurals>
+    <string name="result_pkg_uninstalled">%1$s: تمت إزالته</string>
+    <string name="result_pkg_disabled">%1$s: فشلت الإزالة (%2$s). تم التعطيل بدلًا منها.</string>
+    <string name="result_pkg_failed">%1$s: فشل — %2$s</string>
+    <string name="result_pkg_restored">%1$s: تمت استعادته</string>
+    <string name="result_pkg_restore_failed">%1$s: فشلت الاستعادة — %2$s</string>
 
     <string name="log_title">سجل الإزالة</string>
     <string name="log_empty">لم تتم إزالة أي تطبيق بعد.</string>
@@ -45,6 +85,9 @@
     <string name="restore_all">استعادة الكل</string>
     <string name="restored">مُستعاد</string>
     <string name="removed">مُزال</string>
+    <string name="disabled">مُعطَّل</string>
+    <string name="restore_play_hint">إذا فشلت الاستعادة، يمكنك تثبيته من Google Play.</string>
+    <string name="open_play_store">فتح في Google Play</string>
     <string name="log_entry">%1$s\n%2$s — %3$s</string>
 
     <string name="about_version">الإصدار %1$s</string>

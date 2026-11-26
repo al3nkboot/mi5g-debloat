@@ -37,6 +37,9 @@ to switch between Arabic and English.
 ## Safety notes
 
 - Removal is per-user and reversible. From the app, restore from the **Log** screen.
+- If uninstall is blocked, the app disables the package instead. Restore uses `pm enable`
+  for disabled packages or `install-existing` for removed ones; on failure the command
+  output is shown, with a Google Play link as a last resort.
 - You can also restore manually with:
 
   ```sh

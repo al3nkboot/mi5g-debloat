@@ -1,33 +1,66 @@
 package com.midroid.debloat.data
 
+import com.midroid.debloat.shizuku.ShellResult
 import com.midroid.debloat.shizuku.ShellRunner
 
 private val PKG_PATTERN = Regex("^[a-zA-Z][a-zA-Z0-9_]*(\\.[a-zA-Z][a-zA-Z0-9_]*)+$")
 
+enum class Outcome { UNINSTALLED, DISABLED, RESTORED, FAILED }
+
+data class ActionResult(val pkg: String, val outcome: Outcome, val detail: String)
+
 class Debloater(private val shell: ShellRunner, private val log: RemovalLog) {
-    fun remove(pkg: String, group: Group): Result<Unit> {
+    fun remove(pkg: String, group: Group): ActionResult {
         if (group != Group.SAFE || !PKG_PATTERN.matches(pkg)) {
-            return Result.failure(IllegalArgumentException("Not a removable package: $pkg"))
+            return ActionResult(pkg, Outcome.FAILED, "Not a removable package: $pkg")
         }
-        val result = shell.run(listOf("pm", "uninstall", "--user", "0", pkg))
-        if (result.exit != 0 || !result.out.contains("Success")) {
-            return Result.failure(RuntimeException("Uninstall failed for $pkg: ${result.out}"))
+        val uninstall = shell.run(listOf("pm", "uninstall", "--user", "0", pkg))
+        if (uninstallSucceeded(uninstall.exit, uninstall.out)) {
+            log.add(pkg, LogAction.UNINSTALLED)
+            return ActionResult(pkg, Outcome.UNINSTALLED, formatDetail(uninstall.exit, uninstall.out))
         }
-        log.add(pkg)
-        return Result.success(Unit)
+        val disable = shell.run(listOf("pm", "disable-user", "--user", "0", pkg))
+        val detail = details("uninstall" to uninstall, "disable" to disable)
+        if (enableOrDisableSucceeded(disable.exit, disable.out)) {
+            log.add(pkg, LogAction.DISABLED)
+            return ActionResult(pkg, Outcome.DISABLED, detail)
+        }
+        return ActionResult(pkg, Outcome.FAILED, detail)
     }
 
-    fun restore(pkg: String): Result<Unit> {
+    fun restore(pkg: String): ActionResult {
         if (!PKG_PATTERN.matches(pkg)) {
-            return Result.failure(IllegalArgumentException("Invalid package: $pkg"))
+            return ActionResult(pkg, Outcome.FAILED, "Invalid package: $pkg")
         }
-        val result = shell.run(listOf("cmd", "package", "install-existing", "--user", "0", pkg))
-        if (result.exit != 0 || !result.out.contains("installed for user", ignoreCase = true)) {
-            return Result.failure(RuntimeException("Restore failed for $pkg: ${result.out}"))
+        val action = log.entries().firstOrNull { it.pkg == pkg }?.action ?: LogAction.UNINSTALLED
+        if (action == LogAction.DISABLED) {
+            val enable = shell.run(listOf("pm", "enable", pkg))
+            val detail = details("enable" to enable)
+            return if (enableOrDisableSucceeded(enable.exit, enable.out)) {
+                log.markRestored(pkg)
+                ActionResult(pkg, Outcome.RESTORED, detail)
+            } else {
+                ActionResult(pkg, Outcome.FAILED, detail)
+            }
         }
-        log.markRestored(pkg)
-        return Result.success(Unit)
+        val cmdExisting = shell.run(listOf("cmd", "package", "install-existing", "--user", "0", pkg))
+        if (installExistingSucceeded(cmdExisting.exit, cmdExisting.out)) {
+            log.markRestored(pkg)
+            return ActionResult(pkg, Outcome.RESTORED, details("install-existing" to cmdExisting))
+        }
+        val pmExisting = shell.run(listOf("pm", "install-existing", "--user", "0", pkg))
+        val detail = details("install-existing" to cmdExisting, "pm install-existing" to pmExisting)
+        if (installExistingSucceeded(pmExisting.exit, pmExisting.out)) {
+            log.markRestored(pkg)
+            return ActionResult(pkg, Outcome.RESTORED, detail)
+        }
+        return ActionResult(pkg, Outcome.FAILED, detail)
     }
 
-    fun restoreAll(): List<Pair<String, Result<Unit>>> = log.pending().map { it.pkg to restore(it.pkg) }
+    fun restoreAll(): List<ActionResult> = log.pending().map { restore(it.pkg) }
+
+    private fun details(vararg attempts: Pair<String, ShellResult>): String =
+        attempts.joinToString("\n") { (label, result) ->
+            "$label: ${formatDetail(result.exit, result.out)}"
+        }
 }

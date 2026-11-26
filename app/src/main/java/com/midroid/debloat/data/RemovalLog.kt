@@ -4,7 +4,14 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
-data class LogEntry(val pkg: String, val timeMillis: Long, val restored: Boolean)
+enum class LogAction { UNINSTALLED, DISABLED }
+
+data class LogEntry(
+    val pkg: String,
+    val timeMillis: Long,
+    val restored: Boolean,
+    val action: LogAction = LogAction.UNINSTALLED,
+)
 
 class RemovalLog(private val file: File) {
     fun entries(): List<LogEntry> {
@@ -18,6 +25,7 @@ class RemovalLog(private val file: File) {
                     pkg,
                     obj.optLong("timeMillis"),
                     obj.optBoolean("restored"),
+                    if (obj.optString("action") == "disabled") LogAction.DISABLED else LogAction.UNINSTALLED,
                 )
             }
         } catch (e: Exception) {
@@ -25,9 +33,9 @@ class RemovalLog(private val file: File) {
         }
     }
 
-    fun add(pkg: String, now: Long = System.currentTimeMillis()) {
+    fun add(pkg: String, action: LogAction = LogAction.UNINSTALLED, now: Long = System.currentTimeMillis()) {
         val kept = entries().filterNot { it.pkg == pkg }
-        write(kept + LogEntry(pkg, now, false))
+        write(kept + LogEntry(pkg, now, false, action))
     }
 
     fun markRestored(pkg: String) {
@@ -40,7 +48,13 @@ class RemovalLog(private val file: File) {
     private fun write(entries: List<LogEntry>) {
         val array = JSONArray()
         entries.forEach {
-            array.put(JSONObject().put("pkg", it.pkg).put("timeMillis", it.timeMillis).put("restored", it.restored))
+            array.put(
+                JSONObject()
+                    .put("pkg", it.pkg)
+                    .put("timeMillis", it.timeMillis)
+                    .put("restored", it.restored)
+                    .put("action", if (it.action == LogAction.DISABLED) "disabled" else "uninstalled"),
+            )
         }
         // Write to a temp file and rename so a crash cannot leave a half-written log.
         val tmp = File.createTempFile("removal_log", ".tmp", file.parentFile)

@@ -20,7 +20,10 @@
 
     <string name="scan">Scan</string>
     <string name="scan_hint">Scanning needs no Shizuku; removal does.</string>
-    <string name="scanned_count">Found %1$d apps</string>
+    <plurals name="scanned_count">
+        <item quantity="one">Found %d app</item>
+        <item quantity="other">Found %d apps</item>
+    </plurals>
     <string name="tab_safe">Safe (%1$d)</string>
     <string name="tab_user">User apps (%1$d)</string>
     <string name="tab_protected">Protected (%1$d)</string>
@@ -34,10 +37,27 @@
     <string name="more_items">and %1$d more</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
-    <string name="result_removed_failed">Removed %1$d, failed %2$d</string>
-    <string name="result_restored">Restored 1 app</string>
-    <string name="result_restore_failed">Restore failed</string>
-    <string name="result_restored_failed">Restored %1$d, failed %2$d</string>
+    <plurals name="removed_count">
+        <item quantity="one">Removed %d app</item>
+        <item quantity="other">Removed %d apps</item>
+    </plurals>
+    <plurals name="disabled_count">
+        <item quantity="one">Disabled %d app</item>
+        <item quantity="other">Disabled %d apps</item>
+    </plurals>
+    <plurals name="failed_count">
+        <item quantity="one">Failed %d</item>
+        <item quantity="other">Failed %d</item>
+    </plurals>
+    <plurals name="restored_count">
+        <item quantity="one">Restored %d app</item>
+        <item quantity="other">Restored %d apps</item>
+    </plurals>
+    <string name="result_pkg_uninstalled">%1$s: removed</string>
+    <string name="result_pkg_disabled">%1$s: uninstall failed (%2$s). Disabled instead.</string>
+    <string name="result_pkg_failed">%1$s: failed — %2$s</string>
+    <string name="result_pkg_restored">%1$s: restored</string>
+    <string name="result_pkg_restore_failed">%1$s: restore failed — %2$s</string>
     <string name="check_mark" translatable="false">✓</string>
 
     <string name="log_title">Removal log</string>
@@ -46,6 +66,9 @@
     <string name="restore_all">Restore all</string>
     <string name="restored">Restored</string>
     <string name="removed">Removed</string>
+    <string name="disabled">Disabled</string>
+    <string name="restore_play_hint">If restore failed, you can install it from Google Play.</string>
+    <string name="open_play_store">Open in Google Play</string>
     <string name="log_entry">%1$s\n%2$s — %3$s</string>
 
     <string name="about_version">Version %1$s</string>
