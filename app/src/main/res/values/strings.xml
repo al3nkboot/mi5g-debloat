@@ -4,6 +4,10 @@
     <string name="nav_log">Log</string>
     <string name="nav_about">About</string>
     <string name="back">Back</string>
+    <string name="settings">Settings</string>
+    <string name="allow_unsafe">Allow unsafe selections</string>
+    <string name="allow_unsafe_explain">Expert, Unknown, and Unsafe packages can only be selected when this is on. Unsafe packages are disabled, not uninstalled. This can break the phone.</string>
+    <string name="unsafe_setting_required">Enable Allow unsafe selections in Settings to select Expert, Unknown, or Unsafe packages.</string>
 
     <string name="shizuku_not_installed">Shizuku not installed</string>
     <string name="shizuku_not_running">Shizuku not running</string>
@@ -27,13 +31,26 @@
     <string name="tab_safe">Safe (%1$d)</string>
     <string name="tab_user">User apps (%1$d)</string>
     <string name="tab_protected">Protected (%1$d)</string>
+    <string name="tab_installed">Installed (%1$d)</string>
+    <string name="tab_uninstalled">Uninstalled (%1$d)</string>
+    <string name="search">Search by app or package</string>
+    <string name="filter_all">All</string>
+    <string name="tier_recommended">Recommended</string>
+    <string name="tier_advanced">Advanced</string>
+    <string name="tier_expert">Expert</string>
+    <string name="tier_unsafe">Unsafe</string>
+    <string name="tier_unknown">Unknown</string>
+    <string name="chip_system">SYSTEM</string>
     <string name="select_all">Select all</string>
     <string name="remove_selected">Remove selected (%1$d)</string>
     <string name="user_info">These are probably your own apps — not touched.</string>
     <string name="protected_info">System-critical or unknown system apps — never removable here.</string>
 
     <string name="confirm_title">Confirm removal</string>
-    <string name="confirm_message">Remove %1$d app(s)? You can undo this from the Log screen.</string>
+    <string name="confirm_message">Remove %1$d app(s)? You can undo this from the Uninstalled tab.</string>
+    <string name="confirm_advanced">These are Advanced packages. Removing them may affect system features. Continue?</string>
+    <string name="confirm_risk_title">Dangerous selection</string>
+    <string name="confirm_risk_body">These Expert, Unknown, or Unsafe selections may break the phone or cause a bootloop. A factory reset may be required. Removal is at your own risk. Unsafe packages will be disabled rather than uninstalled. Prefer disable if you are unsure.</string>
     <string name="more_items">and %1$d more</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
@@ -54,7 +71,7 @@
         <item quantity="other">Restored %d apps</item>
     </plurals>
     <string name="result_pkg_uninstalled">%1$s: removed</string>
-    <string name="result_pkg_disabled">%1$s: uninstall failed (%2$s). Disabled instead.</string>
+    <string name="result_pkg_disabled">%1$s: disabled — %2$s</string>
     <string name="result_pkg_failed">%1$s: failed — %2$s</string>
     <string name="result_pkg_restored">%1$s: restored</string>
     <string name="result_pkg_restore_failed">%1$s: restore failed — %2$s</string>
@@ -68,6 +85,7 @@
     <string name="removed">Removed</string>
     <string name="disabled">Disabled</string>
     <string name="restore_play_hint">If restore failed, you can install it from Google Play.</string>
+    <string name="restore_not_on_system">%1$s is not on the system image, so it cannot be restored from here. Install it from Google Play.</string>
     <string name="open_play_store">Open in Google Play</string>
     <string name="log_entry">%1$s\n%2$s — %3$s</string>
 
@@ -78,7 +96,7 @@
     <string name="language_english">English</string>
     <string name="about_support">Support</string>
     <string name="about_credit">Inspired by Android Phones Debloat Prompt by beebom-team (MIT License)</string>
-    <string name="about_independent">The safe list is our own list, curated independently.</string>
+    <string name="about_independent">Our package list and reasons are curated independently, not copied from UAD-ng or Canta.</string>
     <string name="about_disclaimer">Removal applies to the current user only and is reversible via Restore. Use at your own risk.</string>
 
     <string name="reason_glance">Glance lock-screen feed/ads (Realme/Oppo/Xiaomi/Samsung variants)</string>
@@ -110,6 +128,24 @@
     <string name="reason_nearme_themespace">legacy realme Theme Store</string>
     <string name="reason_nearme_themestore">older realme Theme Store package</string>
     <string name="reason_realme_community">official realme Community forum app</string>
+    <string name="reason_heytap_mcs">HeyTap push notification service</string>
+    <string name="reason_heytap_music">HeyTap Music streaming app</string>
+    <string name="reason_heytap_accessory">HeyTap accessory pairing and management</string>
+    <string name="reason_coloros_assistantscreen">ColorOS Assistant Screen feed</string>
+    <string name="reason_coloros_oshare">ColorOS OShare file transfer</string>
+    <string name="reason_coloros_compass2">ColorOS Compass app</string>
+    <string name="reason_coloros_childrenspace">ColorOS Kids Space</string>
+    <string name="reason_coloros_floatassistant">ColorOS floating assistant shortcuts</string>
+    <string name="reason_coloros_ocrscanner">ColorOS OCR text scanner</string>
+    <string name="reason_coloros_operationmanual">ColorOS user guide app</string>
+    <string name="reason_coloros_soundrecorder">ColorOS Sound Recorder app</string>
+    <string name="reason_coloros_phonemanager">ColorOS Phone Manager cleanup and security tools</string>
+    <string name="reason_oplus_aiplaymate">OPPO AI Playmate assistant</string>
+    <string name="reason_heytap_cloud">HeyTap cloud sync and account data</string>
+    <string name="reason_nearme_statistics_rom">ColorOS ROM usage statistics and telemetry</string>
+    <string name="reason_coloros_pictorial">ColorOS lock-screen wallpaper and content service</string>
+    <string name="reason_coloros_smartsidebar">ColorOS Smart Sidebar system feature</string>
+    <string name="reason_unsafe">Core system component; disabling it may break the phone.</string>
 
     <string name="url_shizuku_download" translatable="false">https://shizuku.rikka.app/download/</string>
     <string name="url_paypal" translatable="false">https://paypal.me/Midroid5G</string>

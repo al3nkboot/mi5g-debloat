@@ -19,3 +19,8 @@ fun formatDetail(exit: Int, out: String): String {
     val body = combinedOutput(out).replace(Regex("\\s+"), " ").take(400)
     return "exit $exit: $body"
 }
+
+fun isPackageMissing(out: String): Boolean =
+    out.contains("NameNotFoundException", ignoreCase = true) ||
+        out.contains("doesn't exist", ignoreCase = true) ||
+        out.contains("does not exist", ignoreCase = true)

@@ -1,9 +1,8 @@
 # Mi5G Debloat
 
-Mi5G Debloat (Arabic: إزالة التطبيقات الزائدة) removes a small, hand-curated set of
-preinstalled bloatware and ad/telemetry stubs from an Android phone **for the current
-user**, without root. It uses [Shizuku](https://shizuku.rikka.app/) to run shell commands
-as the shell user.
+Mi5G Debloat (Arabic: إزالة التطبيقات الزائدة) removes or disables selected
+**system/preinstalled** packages for the current Android user, without root. It uses
+[Shizuku](https://shizuku.rikka.app/) to run shell commands as the shell user.
 
 Distributed via GitHub, not Google Play.
 
@@ -17,30 +16,41 @@ Distributed via GitHub, not Google Play.
 
 1. Install and start Shizuku, then grant Mi5G Debloat the Shizuku permission when asked.
 2. Tap **Scan**. Scanning only uses Android's package manager and works without Shizuku.
-3. On the **Safe** tab, tick the apps you want to remove and tap **Remove selected**.
-   The **User apps** and **Protected** tabs are read-only.
-4. Confirm the dialog. Removal runs for the current user only (user 0), so your apps and
-   data for other users are untouched.
-5. Use the **Log** screen to see what was removed and tap **Restore** (or **Restore all**)
-   to undo. Restoration also needs Shizuku.
+3. On **Installed**, search or filter by tier, tick the apps you want to remove, and tap
+   **Remove selected**. Select all affects only the visible, selectable rows.
+4. Confirm the dialog. Removal runs for the current user only (user 0), so apps and data
+   for other users are untouched.
+5. Open **Uninstalled** to see the removal log and tap **Restore** (or **Restore all**) to
+   undo. Restoration also needs Shizuku.
 
-The safe list is **our own list, curated independently**. In addition to the original
-entries, it now covers common realme/ColorOS/OPPO HeyTap packages such as Lock Screen
-Magazine, App Market, Game Space, Theme Store and realme Community. Each entry shows a
-one-line reason. The app never removes packages outside that list, and refuses
-system-critical prefixes even if they appear on a custom list.
+Only system/preinstalled packages appear on **Installed**. User-installed apps are hidden,
+even when their package name is on the Recommended list: `pm uninstall --user 0` would
+delete such an app completely, with no system-image copy to restore. Mi5G Debloat itself is
+also hidden.
+
+Packages have five tiers:
+
+- **Recommended**: the original curated removal candidates.
+- **Advanced**: optional vendor features; selectable by default with an extra confirmation.
+- **Expert**, **Unknown**, and **Unsafe**: selectable only when **Allow unsafe selections**
+  is enabled in Settings. This setting is off by default and shows a risk confirmation.
+
+Unsafe packages are **disabled, never uninstalled**. Other tiers try per-user uninstall
+first and fall back to disable-user when uninstall fails. Expert, Unknown, or Unsafe
+selections can break the phone, cause a bootloop, or require a factory reset; use them at
+your own risk and prefer disabling when unsure.
 
 The app opens in Arabic (RTL) by default even if the phone's system language is English.
-Use the language action on the home bar, or the language row on the **About** screen,
-to switch between Arabic and English.
+Use the language action on the home bar, or the language row on the **About** screen, to
+switch between Arabic and English.
 
 ## Safety notes
 
-- Removal is per-user and reversible. From the app, restore from the **Log** screen.
-- If uninstall is blocked, the app disables the package instead. Restore uses `pm enable`
-  for disabled packages or `install-existing` for removed ones; on failure the command
-  output is shown, with a Google Play link as a last resort.
-- You can also restore manually with:
+- Restore from **Uninstalled**. Disabled packages use `pm enable`; removed packages use
+  `install-existing`, with the `pm install-existing` fallback.
+- If a removed app is not present on the system image, it cannot be restored from here.
+  The app explains this and provides a Google Play button so you can reinstall it.
+- You can also restore a system-image package manually with:
 
   ```sh
   adb shell cmd package install-existing --user 0 <pkg>
@@ -51,8 +61,8 @@ to switch between Arabic and English.
 ## Credits
 
 Inspired by [Android Phones Debloat Prompt](https://github.com/beebom-team/android-debloat-prompt)
-by beebom-team (MIT License). Our safe list was curated independently and is not copied
-from any other project's list.
+by beebom-team (MIT License). Our package list and reasons are curated independently; they
+are not copied from UAD-ng or Canta.
 
 By [@midroid5G](https://github.com/midroid5G). Support: https://paypal.me/Midroid5G
 

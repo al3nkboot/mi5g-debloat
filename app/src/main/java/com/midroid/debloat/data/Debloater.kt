@@ -10,9 +10,28 @@ enum class Outcome { UNINSTALLED, DISABLED, RESTORED, FAILED }
 data class ActionResult(val pkg: String, val outcome: Outcome, val detail: String)
 
 class Debloater(private val shell: ShellRunner, private val log: RemovalLog) {
-    fun remove(pkg: String, group: Group): ActionResult {
-        if (group != Group.SAFE || !PKG_PATTERN.matches(pkg)) {
-            return ActionResult(pkg, Outcome.FAILED, "Not a removable package: $pkg")
+    fun remove(pkg: String, isSystem: Boolean, tier: Tier, allowUnsafe: Boolean): ActionResult {
+        if (!PKG_PATTERN.matches(pkg)) {
+            return ActionResult(pkg, Outcome.FAILED, "Invalid package: $pkg")
+        }
+        if (!isSystem) {
+            return ActionResult(
+                pkg,
+                Outcome.FAILED,
+                "user-installed app; uninstall would delete it with no system image to restore from: $pkg",
+            )
+        }
+        if (!maySelect(tier, allowUnsafe)) {
+            return ActionResult(pkg, Outcome.FAILED, "Allow unsafe selections setting is required: $pkg")
+        }
+        if (tier == Tier.UNSAFE) {
+            val disable = shell.run(listOf("pm", "disable-user", "--user", "0", pkg))
+            val detail = formatDetail(disable.exit, disable.out)
+            if (enableOrDisableSucceeded(disable.exit, disable.out)) {
+                log.add(pkg, LogAction.DISABLED)
+                return ActionResult(pkg, Outcome.DISABLED, detail)
+            }
+            return ActionResult(pkg, Outcome.FAILED, detail)
         }
         val uninstall = shell.run(listOf("pm", "uninstall", "--user", "0", pkg))
         if (uninstallSucceeded(uninstall.exit, uninstall.out)) {

@@ -36,3 +36,29 @@ val SAFE_LIST: List<SafeEntry> = listOf(
     SafeEntry("com.nearme.themestore", R.string.reason_nearme_themestore),
     SafeEntry("com.realmecomm.app", R.string.reason_realme_community),
 )
+
+val ADVANCED_LIST: List<SafeEntry> = listOf(
+    SafeEntry("com.heytap.mcs", R.string.reason_heytap_mcs),
+    SafeEntry("com.heytap.music", R.string.reason_heytap_music),
+    SafeEntry("com.heytap.accessory", R.string.reason_heytap_accessory),
+    SafeEntry("com.coloros.assistantscreen", R.string.reason_coloros_assistantscreen),
+    SafeEntry("com.coloros.oshare", R.string.reason_coloros_oshare),
+    SafeEntry("com.coloros.compass2", R.string.reason_coloros_compass2),
+    SafeEntry("com.coloros.childrenspace", R.string.reason_coloros_childrenspace),
+    SafeEntry("com.coloros.floatassistant", R.string.reason_coloros_floatassistant),
+    SafeEntry("com.coloros.ocrscanner", R.string.reason_coloros_ocrscanner),
+    SafeEntry("com.coloros.operationManual", R.string.reason_coloros_operationmanual),
+    SafeEntry("com.coloros.soundrecorder", R.string.reason_coloros_soundrecorder),
+    SafeEntry("com.coloros.phonemanager", R.string.reason_coloros_phonemanager),
+    SafeEntry("com.oplus.aiplaymate", R.string.reason_oplus_aiplaymate),
+)
+
+val EXPERT_LIST: List<SafeEntry> = listOf(
+    SafeEntry("com.heytap.cloud", R.string.reason_heytap_cloud),
+    SafeEntry("com.nearme.statistics.rom", R.string.reason_nearme_statistics_rom),
+    SafeEntry("com.coloros.pictorial", R.string.reason_coloros_pictorial),
+    SafeEntry("com.coloros.smartsidebar", R.string.reason_coloros_smartsidebar),
+)
+
+val ADVANCED_PKGS: Set<String> = ADVANCED_LIST.map { it.pkg }.toSet()
+val EXPERT_PKGS: Set<String> = EXPERT_LIST.map { it.pkg }.toSet()

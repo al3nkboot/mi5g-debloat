@@ -14,10 +14,12 @@ import com.midroid.debloat.R
 import com.midroid.debloat.data.ActionResult
 import com.midroid.debloat.data.AppItem
 import com.midroid.debloat.data.Debloater
-import com.midroid.debloat.data.Group
 import com.midroid.debloat.data.LogEntry
 import com.midroid.debloat.data.Outcome
 import com.midroid.debloat.data.RemovalLog
+import com.midroid.debloat.data.isPackageMissing
+import com.midroid.debloat.data.maySelect
+import com.midroid.debloat.data.onInstalledList
 import com.midroid.debloat.data.scan as scanApps
 import com.midroid.debloat.shizuku.ShizukuRunner
 import com.midroid.debloat.shizuku.ShizukuState
@@ -31,20 +33,28 @@ import java.io.File
 import java.util.Locale
 
 private const val PERMISSION_CODE = 42
+private const val ALLOW_UNSAFE = "allow_unsafe"
 
-enum class Screen { HOME, LOG, ABOUT }
+enum class Screen { HOME, SETTINGS, ABOUT }
+enum class HomeTab { INSTALLED, UNINSTALLED }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val log = RemovalLog(File(app.filesDir, "removal_log.json"))
     private val debloater = Debloater(ShizukuRunner, log)
+    private val prefs = app.getSharedPreferences("settings", Context.MODE_PRIVATE)
+    private val selfPkg = app.packageName
 
     var screen by mutableStateOf(Screen.HOME)
+        private set
+    var homeTab by mutableStateOf(HomeTab.INSTALLED)
         private set
     var state by mutableStateOf(ShizukuState.NOT_INSTALLED)
         private set
     var items by mutableStateOf<List<AppItem>>(emptyList())
         private set
     var selected by mutableStateOf<Set<String>>(emptySet())
+        private set
+    var allowUnsafe by mutableStateOf(prefs.getBoolean(ALLOW_UNSAFE, false))
         private set
     var busy by mutableStateOf(false)
         private set
@@ -53,6 +63,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     var logMessage by mutableStateOf<String?>(null)
         private set
     var logFailedPkgs by mutableStateOf<List<String>>(emptyList())
+        private set
+    var logMissingPkgs by mutableStateOf<List<String>>(emptyList())
         private set
     var logEntries by mutableStateOf<List<LogEntry>>(emptyList())
         private set
@@ -105,12 +117,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun requestPermission() = requestShizukuPermission(PERMISSION_CODE)
 
     fun showHome() { screen = Screen.HOME }
-    fun showLog() {
-        screen = Screen.LOG
+    fun showInstalled() { homeTab = HomeTab.INSTALLED }
+    fun showUninstalled() {
+        homeTab = HomeTab.UNINSTALLED
         refreshLog()
         logMessage = null
         logFailedPkgs = emptyList()
+        logMissingPkgs = emptyList()
     }
+    fun showSettings() { screen = Screen.SETTINGS }
     fun showAbout() { screen = Screen.ABOUT }
 
     private fun reload() {
@@ -123,23 +138,56 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         homeMessage = count(R.plurals.scanned_count, items.size)
     }
 
+    private fun selectable(item: AppItem): Boolean =
+        onInstalledList(item.isSystem, item.pkg, selfPkg) && maySelect(item.tier, allowUnsafe)
+
     fun toggle(pkg: String) {
-        selected = if (pkg in selected) selected - pkg else selected + pkg
+        val item = items.firstOrNull { it.pkg == pkg } ?: return
+        if (pkg in selected) {
+            selected -= pkg
+        } else if (selectable(item)) {
+            selected += pkg
+        }
     }
 
-    fun selectAll(all: Boolean) {
-        selected = if (all) items.filter { it.group == Group.SAFE }.map { it.pkg }.toSet() else emptySet()
+    fun selectAll(all: Boolean, visible: List<AppItem>) {
+        selected = if (all) visible.filter(::selectable).map { it.pkg }.toSet() else emptySet()
     }
 
-    fun askRemove() { confirmRemove = true }
+    fun updateAllowUnsafe(allow: Boolean) {
+        prefs.edit().putBoolean(ALLOW_UNSAFE, allow).apply()
+        allowUnsafe = allow
+        selected = selected.filter { pkg ->
+            items.firstOrNull { it.pkg == pkg }?.let(::selectable) == true
+        }.toSet()
+    }
+
+    fun askRemove() {
+        val chosen = items.filter { it.pkg in selected }
+        if (chosen.isEmpty() || chosen.size != selected.size) return
+        if (chosen.any { !selectable(it) }) {
+            homeMessage = text(R.string.unsafe_setting_required)
+            confirmRemove = false
+            return
+        }
+        confirmRemove = true
+    }
+
     fun dismissRemove() { confirmRemove = false }
 
     fun removeSelected() {
-        val pkgs = selected.toList()
-        if (busy || state != ShizukuState.READY || pkgs.isEmpty()) return
+        val chosen = items.filter { it.pkg in selected }
+        if (busy || state != ShizukuState.READY || chosen.isEmpty() || chosen.size != selected.size) return
+        if (chosen.any { !selectable(it) }) {
+            homeMessage = text(R.string.unsafe_setting_required)
+            confirmRemove = false
+            return
+        }
         busy = true
         viewModelScope.launch {
-            val results = withContext(Dispatchers.IO) { pkgs.map { debloater.remove(it, Group.SAFE) } }
+            val results = withContext(Dispatchers.IO) {
+                chosen.map { debloater.remove(it.pkg, it.isSystem, it.tier, allowUnsafe) }
+            }
             val parts = mutableListOf<String>()
             val removed = results.count { it.outcome == Outcome.UNINSTALLED }
             val disabled = results.count { it.outcome == Outcome.DISABLED }
@@ -170,9 +218,12 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         if (restored > 0) parts += count(R.plurals.restored_count, restored)
         if (failed > 0) parts += count(R.plurals.failed_count, failed)
         results.forEach { result ->
-            parts += when (result.outcome) {
-                Outcome.RESTORED -> text(R.string.result_pkg_restored, label(result.pkg))
-                Outcome.FAILED -> text(R.string.result_pkg_restore_failed, label(result.pkg), result.detail)
+            parts += when {
+                result.outcome == Outcome.RESTORED -> text(R.string.result_pkg_restored, label(result.pkg))
+                result.outcome == Outcome.FAILED && isPackageMissing(result.detail) ->
+                    text(R.string.restore_not_on_system, label(result.pkg))
+                result.outcome == Outcome.FAILED ->
+                    text(R.string.result_pkg_restore_failed, label(result.pkg), result.detail)
                 else -> text(R.string.result_pkg_failed, label(result.pkg), result.detail)
             }
         }
@@ -186,6 +237,11 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val result = withContext(Dispatchers.IO) { debloater.restore(pkg) }
             logMessage = restoreMessage(listOf(result))
             logFailedPkgs = if (result.outcome == Outcome.FAILED) listOf(pkg) else emptyList()
+            logMissingPkgs = if (result.outcome == Outcome.FAILED && isPackageMissing(result.detail)) {
+                listOf(pkg)
+            } else {
+                emptyList()
+            }
             refreshLog()
             reload()
             busy = false
@@ -200,6 +256,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             val results = withContext(Dispatchers.IO) { debloater.restoreAll() }
             logMessage = restoreMessage(results)
             logFailedPkgs = results.filter { it.outcome == Outcome.FAILED }.map { it.pkg }
+            logMissingPkgs = results.filter { it.outcome == Outcome.FAILED && isPackageMissing(it.detail) }.map { it.pkg }
             refreshLog()
             reload()
             busy = false

@@ -4,6 +4,10 @@
     <string name="nav_log">السجل</string>
     <string name="nav_about">حول</string>
     <string name="back">رجوع</string>
+    <string name="settings">الإعدادات</string>
+    <string name="allow_unsafe">السماح بالتحديدات الخطرة</string>
+    <string name="allow_unsafe_explain">لا يمكن تحديد حزم Expert وUnknown وUnsafe إلا عند تشغيل هذا الخيار. يتم تعطيل حزم Unsafe بدلًا من إلغاء تثبيتها. قد يؤدي ذلك إلى تعطيل الهاتف.</string>
+    <string name="unsafe_setting_required">فعّل «السماح بالتحديدات الخطرة» في الإعدادات لتحديد حزم Expert أو Unknown أو Unsafe.</string>
 
     <string name="shizuku_not_installed">Shizuku غير مثبت</string>
     <string name="shizuku_not_running">Shizuku غير قيد التشغيل</string>
@@ -31,13 +35,26 @@
     <string name="tab_safe">آمنة (%1$d)</string>
     <string name="tab_user">تطبيقات المستخدم (%1$d)</string>
     <string name="tab_protected">محمية (%1$d)</string>
+    <string name="tab_installed">المثبتة (%1$d)</string>
+    <string name="tab_uninstalled">المُزالة (%1$d)</string>
+    <string name="search">البحث بالتطبيق أو اسم الحزمة</string>
+    <string name="filter_all">الكل</string>
+    <string name="tier_recommended">موصى بها</string>
+    <string name="tier_advanced">متقدمة</string>
+    <string name="tier_expert">خبير</string>
+    <string name="tier_unsafe">خطرة</string>
+    <string name="tier_unknown">غير مصنف</string>
+    <string name="chip_system">SYSTEM</string>
     <string name="select_all">تحديد الكل</string>
     <string name="remove_selected">إزالة المحدد (%1$d)</string>
     <string name="user_info">هذه على الأرجح تطبيقاتك — لن يتم لمسها.</string>
     <string name="protected_info">تطبيقات نظام حيوية أو غير معروفة — لا يمكن إزالتها هنا أبدًا.</string>
 
     <string name="confirm_title">تأكيد الإزالة</string>
-    <string name="confirm_message">إزالة %1$d تطبيق؟ يمكنك التراجع من شاشة السجل.</string>
+    <string name="confirm_message">إزالة %1$d تطبيق؟ يمكنك التراجع من علامة تبويب المُزالة.</string>
+    <string name="confirm_advanced">هذه حزم متقدمة. قد تؤثر إزالتها في ميزات النظام. هل تريد المتابعة؟</string>
+    <string name="confirm_risk_title">تحديد خطر</string>
+    <string name="confirm_risk_body">قد تؤدي تحديدات Expert أو Unknown أو Unsafe إلى تعطيل الهاتف أو حدوث حلقة إقلاع (bootloop). قد يلزم إجراء إعادة ضبط المصنع. الإزالة على مسؤوليتك الخاصة. سيتم تعطيل حزم Unsafe بدلًا من إلغاء تثبيتها. إذا لم تكن متأكدًا، فضّل التعطيل.</string>
     <string name="more_items">و%1$d أخرى</string>
     <string name="confirm">تأكيد</string>
     <string name="cancel">إلغاء</string>
@@ -74,7 +91,7 @@
         <item quantity="other">تمت استعادة %d تطبيق</item>
     </plurals>
     <string name="result_pkg_uninstalled">%1$s: تمت إزالته</string>
-    <string name="result_pkg_disabled">%1$s: فشلت الإزالة (%2$s). تم التعطيل بدلًا منها.</string>
+    <string name="result_pkg_disabled">%1$s: تم التعطيل — %2$s</string>
     <string name="result_pkg_failed">%1$s: فشل — %2$s</string>
     <string name="result_pkg_restored">%1$s: تمت استعادته</string>
     <string name="result_pkg_restore_failed">%1$s: فشلت الاستعادة — %2$s</string>
@@ -87,6 +104,7 @@
     <string name="removed">مُزال</string>
     <string name="disabled">مُعطَّل</string>
     <string name="restore_play_hint">إذا فشلت الاستعادة، يمكنك تثبيته من Google Play.</string>
+    <string name="restore_not_on_system">%1$s غير موجود في صورة النظام، لذا لا يمكن استعادته من هنا. ثبّته من Google Play.</string>
     <string name="open_play_store">فتح في Google Play</string>
     <string name="log_entry">%1$s\n%2$s — %3$s</string>
 
@@ -97,7 +115,7 @@
     <string name="language_english">الإنجليزية</string>
     <string name="about_support">الدعم</string>
     <string name="about_credit">مستوحى من Android Phones Debloat Prompt بواسطة beebom-team (ترخيص MIT)</string>
-    <string name="about_independent">قائمة التطبيقات الآمنة خاصة بنا، وقد أعددناها بشكل مستقل.</string>
+    <string name="about_independent">قائمة الحزم وأسبابها من إعدادنا المستقل، وليست منسوخة من UAD-ng أو Canta.</string>
     <string name="about_disclaimer">الإزالة تنطبق على المستخدم الحالي فقط ويمكن التراجع عنها عبر الاستعادة. الاستخدام على مسؤوليتك.</string>
 
     <string name="reason_glance">خلاصة شاشة القفل والإعلانات Glance (إصدارات Realme وOppo وXiaomi وSamsung)</string>
@@ -129,4 +147,22 @@
     <string name="reason_nearme_themespace">متجر Theme Store القديم من realme</string>
     <string name="reason_nearme_themestore">حزمة Theme Store القديمة من realme</string>
     <string name="reason_realme_community">تطبيق realme Community الرسمي للمنتدى</string>
+    <string name="reason_heytap_mcs">خدمة إشعارات HeyTap الفورية</string>
+    <string name="reason_heytap_music">تطبيق بث الموسيقى HeyTap Music</string>
+    <string name="reason_heytap_accessory">إقران ملحقات HeyTap وإدارتها</string>
+    <string name="reason_coloros_assistantscreen">خلاصة شاشة المساعد في ColorOS</string>
+    <string name="reason_coloros_oshare">نقل الملفات عبر ColorOS OShare</string>
+    <string name="reason_coloros_compass2">تطبيق البوصلة في ColorOS</string>
+    <string name="reason_coloros_childrenspace">مساحة الأطفال في ColorOS</string>
+    <string name="reason_coloros_floatassistant">اختصارات المساعد العائم في ColorOS</string>
+    <string name="reason_coloros_ocrscanner">ماسح النصوص OCR في ColorOS</string>
+    <string name="reason_coloros_operationmanual">تطبيق دليل المستخدم في ColorOS</string>
+    <string name="reason_coloros_soundrecorder">تطبيق مسجل الصوت في ColorOS</string>
+    <string name="reason_coloros_phonemanager">أدوات التنظيف والأمان في ColorOS Phone Manager</string>
+    <string name="reason_oplus_aiplaymate">مساعد OPPO AI Playmate</string>
+    <string name="reason_heytap_cloud">مزامنة HeyTap السحابية وبيانات الحساب</string>
+    <string name="reason_nearme_statistics_rom">إحصاءات استخدام وقياس عن بُعد لنظام ColorOS</string>
+    <string name="reason_coloros_pictorial">خدمة خلفيات ومحتوى شاشة القفل في ColorOS</string>
+    <string name="reason_coloros_smartsidebar">ميزة الشريط الجانبي الذكي في ColorOS</string>
+    <string name="reason_unsafe">مكوّن أساسي في النظام؛ قد يؤدي تعطيله إلى تعطيل الهاتف.</string>
 </resources>

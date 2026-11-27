@@ -1,12 +1,13 @@
 package com.midroid.debloat
 
 import com.midroid.debloat.data.Debloater
-import com.midroid.debloat.data.Group
 import com.midroid.debloat.data.LogAction
 import com.midroid.debloat.data.Outcome
 import com.midroid.debloat.data.RemovalLog
+import com.midroid.debloat.data.Tier
 import com.midroid.debloat.data.enableOrDisableSucceeded
 import com.midroid.debloat.data.installExistingSucceeded
+import com.midroid.debloat.data.isPackageMissing
 import com.midroid.debloat.data.uninstallSucceeded
 import com.midroid.debloat.shizuku.ShellResult
 import com.midroid.debloat.shizuku.ShellRunner
@@ -41,27 +42,20 @@ class DebloaterTest {
     private val enableCmd = listOf("pm", "enable", pkg)
 
     @Test
-    fun removeSafeRunsExactCommandAndLogsUninstalled() {
+    fun removeRecommendedSystemAppRunsExactCommandAndLogsUninstalled() {
         val (debloater, shell, log) = setup()
-        assertEquals(Outcome.UNINSTALLED, debloater.remove(pkg, Group.SAFE).outcome)
+        val result = debloater.remove(pkg, isSystem = true, tier = Tier.RECOMMENDED, allowUnsafe = false)
+        assertEquals(Outcome.UNINSTALLED, result.outcome)
         assertEquals(listOf(uninstallCmd), shell.commands)
         assertEquals(listOf(pkg), log.entries().map { it.pkg })
         assertEquals(LogAction.UNINSTALLED, log.entries().single().action)
     }
 
     @Test
-    fun removeRefusesOtherGroupsAndInvalidNames() {
-        listOf(Group.USER, Group.PROTECTED).forEach { group ->
-            val (debloater, shell, log) = setup()
-            val result = debloater.remove(pkg, group)
-            assertEquals(Outcome.FAILED, result.outcome)
-            assertTrue(result.detail.contains("Not a removable package"))
-            assertTrue(shell.commands.isEmpty())
-            assertTrue(log.entries().isEmpty())
-        }
+    fun removeRefusesInvalidNames() {
         listOf("com", "1bad.pkg", "com..example", "com.example.pkg;rm", "com.example.pkg ").forEach { bad ->
             val (debloater, shell, log) = setup()
-            val result = debloater.remove(bad, Group.SAFE)
+            val result = debloater.remove(bad, isSystem = true, tier = Tier.RECOMMENDED, allowUnsafe = false)
             assertEquals(Outcome.FAILED, result.outcome)
             assertTrue(shell.commands.isEmpty())
             assertTrue(log.entries().isEmpty())
@@ -69,20 +63,64 @@ class DebloaterTest {
     }
 
     @Test
-    fun removeFallsBackToDisableWhenUninstallFails() {
-        listOf(
-            ShellResult(1, "Failure [DELETE_FAILED_INTERNAL_ERROR]") to
-                ShellResult(0, "Package $pkg new state: disabled-user"),
-            ShellResult(0, "Failed") to ShellResult(0, ""),
-        ).forEach { (uninstall, disable) ->
-            val (debloater, shell, log) = setup { cmd ->
-                if (cmd == uninstallCmd) uninstall else disable
+    fun removeRefusesUserInstalledAppEvenWhenRecommended() {
+        val (debloater, shell, log) = setup()
+        val result = debloater.remove("com.realmecomm.app", isSystem = false, tier = Tier.RECOMMENDED, allowUnsafe = false)
+        assertEquals(Outcome.FAILED, result.outcome)
+        assertTrue(result.detail.contains("user-installed"))
+        assertTrue(result.detail.contains("no system image"))
+        assertTrue(shell.commands.isEmpty())
+        assertTrue(log.entries().isEmpty())
+    }
+
+    @Test
+    fun removeRefusesExpertAndUnsafeWhenSettingIsOff() {
+        listOf(Tier.EXPERT, Tier.UNKNOWN, Tier.UNSAFE).forEach { tier ->
+            val (debloater, shell, log) = setup()
+            val result = debloater.remove(pkg, isSystem = true, tier = tier, allowUnsafe = false)
+            assertEquals(Outcome.FAILED, result.outcome)
+            assertTrue(result.detail.contains("unsafe selections setting is required", ignoreCase = true))
+            assertTrue(shell.commands.isEmpty())
+            assertTrue(log.entries().isEmpty())
+        }
+    }
+
+    @Test
+    fun removeUnsafeOnlyDisablesAndLogsDisabled() {
+        val (debloater, shell, log) = setup()
+        val result = debloater.remove(pkg, isSystem = true, tier = Tier.UNSAFE, allowUnsafe = true)
+        assertEquals(Outcome.DISABLED, result.outcome)
+        assertEquals(listOf(disableCmd), shell.commands)
+        assertEquals(LogAction.DISABLED, log.entries().single().action)
+    }
+
+    @Test
+    fun removeUnsafeFailureDoesNotFallBackOrLog() {
+        val (debloater, shell, log) = setup { ShellResult(1, "Error [disable failed]") }
+        val result = debloater.remove(pkg, isSystem = true, tier = Tier.UNSAFE, allowUnsafe = true)
+        assertEquals(Outcome.FAILED, result.outcome)
+        assertEquals("exit 1: Error [disable failed]", result.detail)
+        assertEquals(listOf(disableCmd), shell.commands)
+        assertTrue(log.entries().isEmpty())
+    }
+
+    @Test
+    fun recommendedAndAdvancedFallBackToDisableWhenUninstallFails() {
+        listOf(Tier.RECOMMENDED, Tier.ADVANCED).forEach { tier ->
+            listOf(
+                ShellResult(1, "Failure [DELETE_FAILED_INTERNAL_ERROR]") to
+                    ShellResult(0, "Package $pkg new state: disabled-user"),
+                ShellResult(0, "Failed") to ShellResult(0, ""),
+            ).forEach { (uninstall, disable) ->
+                val (debloater, shell, log) = setup { cmd ->
+                    if (cmd == uninstallCmd) uninstall else disable
+                }
+                val result = debloater.remove(pkg, isSystem = true, tier = tier, allowUnsafe = false)
+                assertEquals(Outcome.DISABLED, result.outcome)
+                assertEquals(listOf(uninstallCmd, disableCmd), shell.commands)
+                assertEquals(LogAction.DISABLED, log.entries().single().action)
+                assertTrue(result.detail.contains(uninstall.out.trim()))
             }
-            val result = debloater.remove(pkg, Group.SAFE)
-            assertEquals(Outcome.DISABLED, result.outcome)
-            assertEquals(listOf(uninstallCmd, disableCmd), shell.commands)
-            assertEquals(LogAction.DISABLED, log.entries().single().action)
-            assertTrue(result.detail.contains(uninstall.out.trim()))
         }
     }
 
@@ -95,7 +133,7 @@ class DebloaterTest {
                 ShellResult(1, "Error [disable failed]")
             }
         }
-        val result = debloater.remove(pkg, Group.SAFE)
+        val result = debloater.remove(pkg, isSystem = true, tier = Tier.RECOMMENDED, allowUnsafe = false)
         assertEquals(Outcome.FAILED, result.outcome)
         assertEquals(listOf(uninstallCmd, disableCmd), shell.commands)
         assertTrue(log.entries().isEmpty())
@@ -197,5 +235,13 @@ class DebloaterTest {
         assertFalse(uninstallSucceeded(0, "Failed"))
         assertTrue(enableOrDisableSucceeded(0, ""))
         assertFalse(enableOrDisableSucceeded(1, "Error"))
+    }
+
+    @Test
+    fun packageMissingParsingMatchesOnlyActualMissingPackageErrors() {
+        assertTrue(isPackageMissing("install-existing: exit 1: NameNotFoundException: Package com.realmecomm.app doesn't exist"))
+        assertTrue(isPackageMissing("Package COM.EXAMPLE.APP DOES NOT EXIST"))
+        assertFalse(isPackageMissing("Failure [not installed]"))
+        assertFalse(isPackageMissing("Failure [DELETE_FAILED_INTERNAL_ERROR]"))
     }
 }
