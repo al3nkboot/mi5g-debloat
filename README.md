@@ -21,11 +21,14 @@ removes apps by itself.
 
 1. Install and start Shizuku, then grant Mi5G Debloat the Shizuku permission when asked.
 2. Tap **Scan**. Scanning only uses Android's package manager and works without Shizuku.
-3. On **Installed**, search or filter by tier, tick the apps you want to remove, and tap
+3. The app selects the list for the detected brand (you can switch brand or **All**).
+   Optionally tap **Select recommended** to tick that list's Recommended apps, then review
+   them. Nothing is removed until you confirm.
+4. On **Installed**, search or filter by tier, tick the apps you want to remove, and tap
    **Remove selected**. Select all affects only the visible, selectable rows.
-4. Confirm the dialog. Removal runs for the current user only (user 0), so apps and data
+5. Confirm the dialog. Removal runs for the current user only (user 0), so apps and data
    for other users are untouched.
-5. Open **Uninstalled** to see the removal log and tap **Restore** (or **Restore all**) to
+6. Open **Uninstalled** to see the removal log and tap **Restore** (or **Restore all**) to
    undo. Restoration also needs Shizuku.
 
 The home list scrolls as one page (status, scan, tabs, search, and rows), with the remove / restore-all button fixed at the bottom.
@@ -37,7 +40,8 @@ also hidden.
 
 Packages have five tiers:
 
-- **Recommended**: the original curated removal candidates.
+- **Recommended**: removal candidates from the selected brand list, each checked against
+  at least two independent public sources (not UAD-ng or Canta).
 - **Advanced**: optional vendor features; selectable by default with an extra confirmation.
 - **Expert**, **Unknown**, and **Unsafe**: selectable only when **Allow unsafe selections**
   is enabled in Settings. This setting is off by default and shows a risk confirmation.
@@ -64,6 +68,8 @@ switch between Arabic and English.
   ```
 
 - Removing a preinstalled app may break a vendor feature. Use at your own risk.
+- Hardware testing in this project has been on a Realme 15 5G (earlier 0.1.x builds).
+  Other brand lists are source-based and have not been confirmed on those phones.
 
 ## Credits
 
