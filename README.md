@@ -23,6 +23,8 @@ Distributed via GitHub, not Google Play.
 5. Open **Uninstalled** to see the removal log and tap **Restore** (or **Restore all**) to
    undo. Restoration also needs Shizuku.
 
+The home list scrolls as one page (status, scan, tabs, search, and rows), with the remove / restore-all button fixed at the bottom.
+
 Only system/preinstalled packages appear on **Installed**. User-installed apps are hidden,
 even when their package name is on the Recommended list: `pm uninstall --user 0` would
 delete such an app completely, with no system-image copy to restore. Mi5G Debloat itself is

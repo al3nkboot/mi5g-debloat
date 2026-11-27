@@ -190,12 +190,13 @@ private fun LanguageMenu() {
 
 @Composable
 fun MainScreen(vm: MainViewModel = viewModel()) {
-    Scaffold { padding ->
-        Column(Modifier.fillMaxSize().padding(padding)) {
-            when (vm.screen) {
-                Screen.HOME -> HomeScreen(vm)
-                Screen.SETTINGS -> SettingsScreen(vm)
-                Screen.ABOUT -> AboutScreen(vm)
+    // HomeScreen has its own Scaffold (top + bottom bars). Nesting it here
+    // would eat the screen and undo the single-list scroll.
+    when (vm.screen) {
+        Screen.HOME -> HomeScreen(vm)
+        Screen.SETTINGS, Screen.ABOUT -> Scaffold { padding ->
+            Column(Modifier.fillMaxSize().padding(padding)) {
+                if (vm.screen == Screen.SETTINGS) SettingsScreen(vm) else AboutScreen(vm)
             }
         }
     }
@@ -215,51 +216,102 @@ private fun HomeScreen(vm: MainViewModel) {
         matchesQuery(label, it.pkg, query) && (tierFilter == null || tierOf(it.pkg) == tierFilter)
     }
 
-    Column(Modifier.fillMaxSize()) {
-        TopAppBar(
-            title = { Text(stringResource(R.string.app_name)) },
-            actions = {
-                LanguageMenu()
-                TextButton(onClick = vm::showSettings) { Text(stringResource(R.string.settings)) }
-                TextButton(onClick = vm::showAbout) { Text(stringResource(R.string.nav_about)) }
-            },
-        )
-        StatusCard(vm)
-        Text(
-            stringResource(R.string.scan_hint),
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.padding(horizontal = 16.dp),
-        )
-        Button(onClick = vm::scan, modifier = Modifier.padding(16.dp)) {
-            Text(stringResource(R.string.scan))
-        }
-        vm.homeMessage?.let {
-            Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp))
-        }
-        SecondaryTabRow(selectedTabIndex = if (vm.homeTab == HomeTab.INSTALLED) 0 else 1) {
-            Tab(
-                selected = vm.homeTab == HomeTab.INSTALLED,
-                onClick = vm::showInstalled,
-                text = { Text(stringResource(R.string.tab_installed, vm.items.size)) },
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.app_name)) },
+                actions = {
+                    LanguageMenu()
+                    TextButton(onClick = vm::showSettings) { Text(stringResource(R.string.settings)) }
+                    TextButton(onClick = vm::showAbout) { Text(stringResource(R.string.nav_about)) }
+                },
             )
-            Tab(
-                selected = vm.homeTab == HomeTab.UNINSTALLED,
-                onClick = vm::showUninstalled,
-                text = { Text(stringResource(R.string.tab_uninstalled, vm.logEntries.size)) },
-            )
+        },
+        bottomBar = {
+            when (vm.homeTab) {
+                HomeTab.INSTALLED -> Button(
+                    onClick = vm::askRemove,
+                    enabled = vm.state == ShizukuState.READY && vm.selected.isNotEmpty() && !vm.busy,
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                ) {
+                    Text(stringResource(R.string.remove_selected, vm.selected.size))
+                }
+                HomeTab.UNINSTALLED -> {
+                    val pending = vm.logEntries.count { !it.restored }
+                    Button(
+                        onClick = vm::restoreAll,
+                        enabled = vm.state == ShizukuState.READY && pending > 0 && !vm.busy,
+                        modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    ) { Text(stringResource(R.string.restore_all)) }
+                }
+            }
+        },
+    ) { padding ->
+        LazyColumn(Modifier.padding(padding).fillMaxSize()) {
+            item { StatusCard(vm) }
+            item {
+                Text(
+                    stringResource(R.string.scan_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
+                Button(onClick = vm::scan, modifier = Modifier.padding(16.dp)) {
+                    Text(stringResource(R.string.scan))
+                }
+                vm.homeMessage?.let {
+                    Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp))
+                }
+            }
+            item {
+                SecondaryTabRow(selectedTabIndex = if (vm.homeTab == HomeTab.INSTALLED) 0 else 1) {
+                    Tab(
+                        selected = vm.homeTab == HomeTab.INSTALLED,
+                        onClick = vm::showInstalled,
+                        text = { Text(stringResource(R.string.tab_installed, vm.items.size)) },
+                    )
+                    Tab(
+                        selected = vm.homeTab == HomeTab.UNINSTALLED,
+                        onClick = vm::showUninstalled,
+                        text = { Text(stringResource(R.string.tab_uninstalled, vm.logEntries.size)) },
+                    )
+                }
+            }
+            item {
+                ListControls(
+                    query = query,
+                    onQueryChange = { query = it },
+                    tier = tierFilter,
+                    onTierChange = { tierFilter = it },
+                )
+            }
+            when (vm.homeTab) {
+                HomeTab.INSTALLED -> {
+                    item { SelectAllRow(vm, visibleInstalled) }
+                    items(visibleInstalled, key = { it.pkg }) { item ->
+                        InstalledRow(vm, item)
+                    }
+                }
+                HomeTab.UNINSTALLED -> {
+                    vm.logMessage?.let { message ->
+                        item {
+                            Text(
+                                message,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.padding(horizontal = 16.dp),
+                            )
+                        }
+                    }
+                    if (vm.logEntries.isEmpty()) {
+                        item { Text(stringResource(R.string.log_empty), modifier = Modifier.padding(16.dp)) }
+                    }
+                    items(visibleLog, key = { "${it.pkg}-${it.timeMillis}" }) { entry ->
+                        LogRow(vm, entry, labels)
+                    }
+                }
+            }
         }
-        ListControls(
-            query = query,
-            onQueryChange = { query = it },
-            tier = tierFilter,
-            onTierChange = { tierFilter = it },
-        )
-        when (vm.homeTab) {
-            HomeTab.INSTALLED -> InstalledTab(vm, visibleInstalled, Modifier.weight(1f))
-            HomeTab.UNINSTALLED -> UninstalledTab(vm, visibleLog, labels, Modifier.weight(1f))
-        }
+        if (vm.confirmRemove) ConfirmDialog(vm)
     }
-    if (vm.confirmRemove) ConfirmDialog(vm)
 }
 
 @Composable
@@ -399,50 +451,41 @@ private fun SystemChip() {
 }
 
 @Composable
-private fun InstalledTab(vm: MainViewModel, visible: List<AppItem>, modifier: Modifier) {
+private fun SelectAllRow(vm: MainViewModel, visible: List<AppItem>) {
     val selectable = visible.filter { maySelect(it.tier, vm.allowUnsafe) }
     val allSelected = selectable.isNotEmpty() && selectable.all { it.pkg in vm.selected }
-    Column(modifier) {
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
-            Checkbox(
-                checked = allSelected,
-                onCheckedChange = { vm.selectAll(it, visible) },
-                enabled = selectable.isNotEmpty(),
-            )
-            Text(stringResource(R.string.select_all))
-        }
-        LazyColumn(Modifier.weight(1f)) {
-            items(visible, key = { it.pkg }) { item ->
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                ) {
-                    Checkbox(
-                        checked = item.pkg in vm.selected,
-                        onCheckedChange = { vm.toggle(item.pkg) },
-                        enabled = maySelect(item.tier, vm.allowUnsafe),
-                    )
-                    Column(Modifier.weight(1f).padding(vertical = 6.dp)) {
-                        Text(item.label)
-                        PackageName(item.pkg)
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            TierBadge(item.tier)
-                            SystemChip()
-                        }
-                        item.reason?.let { Text(stringResource(it), style = MaterialTheme.typography.bodySmall) }
-                    }
-                }
-                HorizontalDivider()
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(horizontal = 16.dp)) {
+        Checkbox(
+            checked = allSelected,
+            onCheckedChange = { vm.selectAll(it, visible) },
+            enabled = selectable.isNotEmpty(),
+        )
+        Text(stringResource(R.string.select_all))
+    }
+}
+
+@Composable
+private fun InstalledRow(vm: MainViewModel, item: AppItem) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+    ) {
+        Checkbox(
+            checked = item.pkg in vm.selected,
+            onCheckedChange = { vm.toggle(item.pkg) },
+            enabled = maySelect(item.tier, vm.allowUnsafe),
+        )
+        Column(Modifier.weight(1f).padding(vertical = 6.dp)) {
+            Text(item.label)
+            PackageName(item.pkg)
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                TierBadge(item.tier)
+                SystemChip()
             }
-        }
-        Button(
-            onClick = vm::askRemove,
-            enabled = vm.state == ShizukuState.READY && vm.selected.isNotEmpty() && !vm.busy,
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-        ) {
-            Text(stringResource(R.string.remove_selected, vm.selected.size))
+            item.reason?.let { Text(stringResource(it), style = MaterialTheme.typography.bodySmall) }
         }
     }
+    HorizontalDivider()
 }
 
 @Composable
@@ -478,67 +521,44 @@ private fun ConfirmDialog(vm: MainViewModel) {
 }
 
 @Composable
-private fun UninstalledTab(
-    vm: MainViewModel,
-    entries: List<LogEntry>,
-    labels: Map<String, String>,
-    modifier: Modifier,
-) {
+private fun LogRow(vm: MainViewModel, entry: LogEntry, labels: Map<String, String>) {
     val context = LocalContext.current
-    val pending = vm.logEntries.count { !it.restored }
-    Column(modifier) {
-        Button(
-            onClick = vm::restoreAll,
-            enabled = vm.state == ShizukuState.READY && pending > 0 && !vm.busy,
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
-        ) { Text(stringResource(R.string.restore_all)) }
-        vm.logMessage?.let {
-            Text(it, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 16.dp))
+    val date = remember(entry.timeMillis) {
+        DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(entry.timeMillis))
+    }
+    val status = stringResource(
+        when {
+            entry.restored -> R.string.restored
+            entry.action == LogAction.DISABLED -> R.string.disabled
+            else -> R.string.removed
         }
-        if (vm.logEntries.isEmpty()) {
-            Text(stringResource(R.string.log_empty), modifier = Modifier.padding(16.dp))
+    )
+    val label = labels[entry.pkg] ?: entry.pkg
+    Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Text(stringResource(R.string.log_entry, label, date, status))
+        if (!entry.restored) {
+            Button(onClick = { vm.restore(entry.pkg) }, enabled = !vm.busy) {
+                Text(stringResource(R.string.restore))
+            }
         }
-        LazyColumn(Modifier.weight(1f)) {
-            items(entries, key = { "${it.pkg}-${it.timeMillis}" }) { entry ->
-                val date = remember(entry.timeMillis) {
-                    DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(entry.timeMillis))
-                }
-                val status = stringResource(
-                    when {
-                        entry.restored -> R.string.restored
-                        entry.action == LogAction.DISABLED -> R.string.disabled
-                        else -> R.string.removed
-                    }
+        if (entry.pkg in vm.logFailedPkgs) {
+            if (entry.pkg in vm.logMissingPkgs) {
+                Text(
+                    stringResource(R.string.restore_not_on_system, label),
+                    style = MaterialTheme.typography.bodySmall,
                 )
-                val label = labels[entry.pkg] ?: entry.pkg
-                Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-                    Text(stringResource(R.string.log_entry, label, date, status))
-                    if (!entry.restored) {
-                        Button(onClick = { vm.restore(entry.pkg) }, enabled = !vm.busy) {
-                            Text(stringResource(R.string.restore))
-                        }
-                    }
-                    if (entry.pkg in vm.logFailedPkgs) {
-                        if (entry.pkg in vm.logMissingPkgs) {
-                            Text(
-                                stringResource(R.string.restore_not_on_system, label),
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        } else {
-                            Text(
-                                stringResource(R.string.restore_play_hint),
-                                style = MaterialTheme.typography.bodySmall,
-                            )
-                        }
-                        Button(onClick = { openPlayStore(context, entry.pkg) }) {
-                            Text(stringResource(R.string.open_play_store))
-                        }
-                    }
-                }
-                HorizontalDivider()
+            } else {
+                Text(
+                    stringResource(R.string.restore_play_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            Button(onClick = { openPlayStore(context, entry.pkg) }) {
+                Text(stringResource(R.string.open_play_store))
             }
         }
     }
+    HorizontalDivider()
 }
 
 @Composable
