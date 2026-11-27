@@ -6,3 +6,6 @@ local.properties
 .idea
 
 .kotlin
+signing.properties
+keystore.properties
+*.pw
