@@ -31,10 +31,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SecondaryTabRow
@@ -408,15 +411,34 @@ private fun BrandControls(vm: MainViewModel, onPreset: () -> Unit) {
             stringResource(R.string.brand_detected, vm.detectedBrand),
             style = MaterialTheme.typography.bodySmall,
         )
-        Text(stringResource(R.string.brand_list), style = MaterialTheme.typography.titleSmall)
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
-            OemId.values().forEachIndexed { index, oem ->
-                if (index > 0) Spacer(Modifier.width(8.dp))
-                FilterChip(
-                    selected = vm.selectedOem == oem,
-                    onClick = { vm.selectOem(oem) },
-                    label = { Text(stringResource(brandLabelRes(oem))) },
-                )
+        var expanded by remember { mutableStateOf(false) }
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded },
+            modifier = Modifier.fillMaxWidth().padding(top = 4.dp),
+        ) {
+            OutlinedTextField(
+                value = stringResource(brandLabelRes(vm.selectedOem)),
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                label = { Text(stringResource(R.string.brand_list)) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
+            )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                OemId.values().forEach { oem ->
+                    DropdownMenuItem(
+                        text = { Text(stringResource(brandLabelRes(oem))) },
+                        onClick = {
+                            vm.selectOem(oem)
+                            expanded = false
+                        },
+                    )
+                }
             }
         }
         Button(onClick = onPreset, enabled = vm.presetEnabled) {

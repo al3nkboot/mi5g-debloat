@@ -6,6 +6,7 @@ import com.midroid.debloat.data.OemId
 import com.midroid.debloat.data.OemList
 import com.midroid.debloat.data.Tier
 import com.midroid.debloat.data.isUnsafe
+import com.midroid.debloat.data.mapOem
 import com.midroid.debloat.data.parseOemList
 import com.midroid.debloat.data.tierOf
 import org.junit.Assert.assertEquals
@@ -48,6 +49,17 @@ class OemCatalogTest {
         assertEquals(Tier.RECOMMENDED, tierOf("com.facebook.appmanager", catalog, OemId.SAMSUNG))
         assertEquals(Tier.RECOMMENDED, tierOf("com.facebook.appmanager", catalog, OemId.GOOGLE))
         assertEquals(Tier.UNSAFE, tierOf("com.xiaomi.account", catalog, OemId.GOOGLE))
+    }
+
+    @Test
+    fun colorOsAssetsRemainActiveForRealmeSelection() {
+        listOf("realme", "Realme", "REAlme").forEach { brand ->
+            assertEquals(OemId.COLOROS, mapOem("realme", brand))
+        }
+        assertEquals(Tier.RECOMMENDED, tierOf("com.oplus.themestore", catalog, OemId.COLOROS))
+        assertEquals(Tier.ADVANCED, tierOf("com.oplus.aiplaymate", catalog, OemId.COLOROS))
+        assertEquals(Tier.UNKNOWN, tierOf("com.oplus.themestore", catalog, OemId.GOOGLE))
+        assertEquals(Tier.ADVANCED, tierOf("com.oplus.aiplaymate", catalog, OemId.ALL))
     }
 
     @Test

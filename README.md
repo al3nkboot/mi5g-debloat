@@ -35,13 +35,14 @@
 
 ## لقطات
 
-من الإصدار **0.1.3** على جهاز Realme حقيقي. واجهة 0.2.0 تضيف قائمة الشركة وزر تحديد الموصى بها وعدّادات التصنيف.
+من الإصدار **0.2.0** على جهاز Realme 15 5G حقيقي.
 
 <p>
-<img src="docs/screenshots/01-recommended.png" width="200" alt="تصنيف موصى بها — Theme Store">
-<img src="docs/screenshots/02-advanced.png" width="200" alt="تصنيف متقدمة — Compass">
-<img src="docs/screenshots/03-expert.png" width="200" alt="تصنيف خبير — Smart Sidebar">
-<img src="docs/screenshots/04-unsafe.png" width="200" alt="تصنيف خطرة — شريط التنقل">
+<img src="docs/screenshots/01-home.png" width="200" alt="الشاشة الرئيسية — ريلمي">
+<img src="docs/screenshots/03-all.png" width="200" alt="التصنيف الكل">
+<img src="docs/screenshots/02-expert.png" width="200" alt="تصنيف خبير">
+<img src="docs/screenshots/04-settings.png" width="200" alt="الإعدادات">
+<img src="docs/screenshots/05-about.png" width="200" alt="حول">
 </p>
 
 ## التنزيل
@@ -131,13 +132,14 @@ Removes or disables preinstalled **system** apps for the current Android user, w
 
 ## Screenshots
 
-From **0.1.3** on a real Realme phone. The 0.2.0 UI adds the brand list, **Select recommended**, and per-tier counts.
+From **0.2.0** on a real Realme 15 5G.
 
 <p>
-<img src="docs/screenshots/01-recommended.png" width="200" alt="Recommended tier, Theme Store">
-<img src="docs/screenshots/02-advanced.png" width="200" alt="Advanced tier, Compass">
-<img src="docs/screenshots/03-expert.png" width="200" alt="Expert tier, Smart Sidebar">
-<img src="docs/screenshots/04-unsafe.png" width="200" alt="Unsafe tier, navigation bar">
+<img src="docs/screenshots/01-home.png" width="200" alt="Home screen, Realme">
+<img src="docs/screenshots/03-all.png" width="200" alt="All packages">
+<img src="docs/screenshots/02-expert.png" width="200" alt="Expert tier">
+<img src="docs/screenshots/04-settings.png" width="200" alt="Settings">
+<img src="docs/screenshots/05-about.png" width="200" alt="About">
 </p>
 
 ## Download

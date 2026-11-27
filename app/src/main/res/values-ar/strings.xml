@@ -6,8 +6,8 @@
     <string name="back">رجوع</string>
     <string name="settings">الإعدادات</string>
     <string name="allow_unsafe">السماح بالتحديدات الخطرة</string>
-    <string name="allow_unsafe_explain">لا يمكن تحديد حزم Expert وUnknown وUnsafe إلا عند تشغيل هذا الخيار. يتم تعطيل حزم Unsafe بدلًا من إلغاء تثبيتها. قد يؤدي ذلك إلى تعطيل الهاتف.</string>
-    <string name="unsafe_setting_required">فعّل «السماح بالتحديدات الخطرة» في الإعدادات لتحديد حزم Expert أو Unknown أو Unsafe.</string>
+    <string name="allow_unsafe_explain">لا يمكن تحديد حزم خبير وغير مصنف وخطرة إلا عند تشغيل هذا الخيار. يتم تعطيل حزم خطرة بدلًا من إلغاء تثبيتها. قد يؤدي ذلك إلى تعطيل الهاتف.</string>
+    <string name="unsafe_setting_required">فعّل «السماح بالتحديدات الخطرة» في الإعدادات لتحديد حزم خبير أو غير مصنف أو خطرة.</string>
 
     <string name="shizuku_not_installed">Shizuku غير مثبت</string>
     <string name="shizuku_not_running">Shizuku غير قيد التشغيل</string>
@@ -74,7 +74,7 @@
     <string name="confirm_message">إزالة %1$d تطبيق؟ يمكنك التراجع من علامة تبويب المُزالة.</string>
     <string name="confirm_advanced">هذه حزم متقدمة. قد تؤثر إزالتها في ميزات النظام. هل تريد المتابعة؟</string>
     <string name="confirm_risk_title">تحديد خطر</string>
-    <string name="confirm_risk_body">قد تؤدي تحديدات Expert أو Unknown أو Unsafe إلى تعطيل الهاتف أو حدوث حلقة إقلاع (bootloop). قد يلزم إجراء إعادة ضبط المصنع. الإزالة على مسؤوليتك الخاصة. سيتم تعطيل حزم Unsafe بدلًا من إلغاء تثبيتها. إذا لم تكن متأكدًا، فضّل التعطيل.</string>
+    <string name="confirm_risk_body">قد تؤدي تحديدات خبير أو غير مصنف أو خطرة إلى تعطيل الهاتف أو حدوث حلقة إقلاع (bootloop). قد يلزم إجراء إعادة ضبط المصنع. الإزالة على مسؤوليتك الخاصة. سيتم تعطيل حزم خطرة بدلًا من إلغاء تثبيتها. إذا لم تكن متأكدًا، فضّل التعطيل.</string>
     <string name="more_items">و%1$d أخرى</string>
     <string name="confirm">تأكيد</string>
     <string name="cancel">إلغاء</string>
