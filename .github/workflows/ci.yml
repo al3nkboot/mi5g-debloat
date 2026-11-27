@@ -13,12 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
           cache: gradle
-      - uses: android-actions/setup-android@v3
+      # GitHub-hosted runners already include an Android SDK. Accept licenses
+      # and let Gradle fetch any missing platforms; avoid setup-android (sdkmanager
+      # failed on cmdline-tools 16 in the first CI run).
+      - name: Accept Android SDK licenses
+        run: |
+          set -euo pipefail
+          : "${ANDROID_HOME:=${ANDROID_SDK_ROOT:-}}"
+          if [ -z "${ANDROID_HOME}" ] || [ ! -d "${ANDROID_HOME}" ]; then
+            echo "ANDROID_HOME is not set or missing on this runner" >&2
+            exit 1
+          fi
+          echo "ANDROID_HOME=${ANDROID_HOME}" >> "${GITHUB_ENV}"
+          mkdir -p "${ANDROID_HOME}/licenses"
+          printf '24333f8a63b6825ea9c5514f83c2829b004d1efc\n' > "${ANDROID_HOME}/licenses/android-sdk-license"
+          printf '84831b9409646161cecb09b2b94933906aa2d5e2\n' > "${ANDROID_HOME}/licenses/android-sdk-preview-license"
       - name: Unit tests and debug APK
         run: ./gradlew :app:testDebugUnitTest :app:assembleDebug --no-daemon --max-workers=2
