@@ -2,8 +2,6 @@ package com.midroid.debloat.data
 
 enum class Tier { RECOMMENDED, ADVANCED, EXPERT, UNSAFE, UNKNOWN }
 
-val SAFE_PKGS: Set<String> = SAFE_LIST.map { it.pkg }.toSet()
-
 val DENY_PREFIXES: Set<String> = setOf(
     "android",
     "com.android.systemui",
@@ -47,6 +45,9 @@ val DENY_PREFIXES: Set<String> = setOf(
     "com.coloros.bootreg",
     "com.coloros.lockassistant",
     "com.coloros.securepay",
+    "com.samsung.android.knox.",
+    "com.samsung.knox.",
+    "com.sec.enterprise.",
 )
 
 // An entry ending in "." covers that exact entry and its subpackages; others match exactly.
@@ -54,12 +55,27 @@ fun isUnsafe(pkg: String): Boolean = DENY_PREFIXES.any {
     if (it.endsWith(".")) pkg == it || pkg.startsWith(it) else pkg == it
 }
 
-fun tierOf(pkg: String, safe: Set<String> = SAFE_PKGS): Tier = when {
-    isUnsafe(pkg) -> Tier.UNSAFE
-    pkg in EXPERT_PKGS -> Tier.EXPERT
-    pkg in ADVANCED_PKGS -> Tier.ADVANCED
-    pkg in safe -> Tier.RECOMMENDED
-    else -> Tier.UNKNOWN
+private fun tierRank(tier: Tier): Int = when (tier) {
+    Tier.RECOMMENDED -> 1
+    Tier.ADVANCED -> 2
+    Tier.EXPERT -> 3
+    Tier.UNSAFE -> 4
+    Tier.UNKNOWN -> 0
+}
+
+private fun activeEntry(pkg: String, catalog: OemCatalog, selected: OemId): OemEntry? =
+    catalog.activeEntries(pkg, selected).maxWithOrNull(compareBy { tierRank(it.tier) })
+
+fun tierOf(pkg: String, catalog: OemCatalog, selected: OemId): Tier = when {
+    isUnsafe(pkg) || catalog.unsafeEntries(pkg).isNotEmpty() -> Tier.UNSAFE
+    else -> activeEntry(pkg, catalog, selected)?.tier ?: Tier.UNKNOWN
+}
+
+fun reasonOf(pkg: String, catalog: OemCatalog, selected: OemId): String? {
+    val unsafe = catalog.unsafeEntries(pkg)
+    if (unsafe.isNotEmpty()) return unsafe.firstOrNull { it.reason != "unsafe" }?.reason ?: "unsafe"
+    if (isUnsafe(pkg)) return "unsafe"
+    return activeEntry(pkg, catalog, selected)?.reason
 }
 
 fun maySelect(tier: Tier, allowUnsafe: Boolean): Boolean = when (tier) {

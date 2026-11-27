@@ -1,0 +1,246 @@
+{
+  "id": "xiaomi",
+  "label": "Xiaomi / Redmi / POCO (HyperOS / MIUI)",
+  "packages": [
+    {
+      "pkg": "com.miui.analytics",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.miui.msa.global",
+      "tier": "RECOMMENDED",
+      "reason": "ads"
+    },
+    {
+      "pkg": "com.miui.bugreport",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.xiaomi.glgm",
+      "tier": "RECOMMENDED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.mi.globalminusscreen",
+      "tier": "RECOMMENDED",
+      "reason": "ads"
+    },
+    {
+      "pkg": "com.miui.android.fashiongallery",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.miui.hybrid",
+      "tier": "ADVANCED",
+      "reason": "ads"
+    },
+    {
+      "pkg": "com.miui.hybrid.accessory",
+      "tier": "ADVANCED",
+      "reason": "ads"
+    },
+    {
+      "pkg": "com.miui.miservice",
+      "tier": "ADVANCED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.miui.userguide",
+      "tier": "ADVANCED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.mi.global.shop",
+      "tier": "ADVANCED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.mi.global.bbs",
+      "tier": "ADVANCED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.miui.player",
+      "tier": "ADVANCED",
+      "reason": "oem_media"
+    },
+    {
+      "pkg": "com.miui.videoplayer",
+      "tier": "ADVANCED",
+      "reason": "oem_media"
+    },
+    {
+      "pkg": "com.mi.globalbrowser",
+      "tier": "ADVANCED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.android.thememanager",
+      "tier": "ADVANCED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.miui.compass",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.notes",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.xiaomi.midrop",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.xiaomi.mipicks",
+      "tier": "ADVANCED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.xiaomi.scanner",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.yellowpage",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.cleanmaster",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.touchassistant",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.screenrecorder",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.mi.health",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.mishare.connectivity",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.xiaomi.calendar",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.weather2",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.xiaomi.joyose",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.miui.daemon",
+      "tier": "EXPERT",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.miui.cloudbackup",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.miui.micloudsync",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.miui.cloudservice",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.xiaomi.micloud.sdk",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.miui.systemAdSolution",
+      "tier": "ADVANCED",
+      "reason": "ads"
+    },
+    {
+      "pkg": "com.xiaomi.account",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.xiaomi.finddevice",
+      "tier": "UNSAFE",
+      "reason": "find_device"
+    },
+    {
+      "pkg": "com.xiaomi.xmsf",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.miui.home",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.miui.securitycenter",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.miui.securityadd",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.miui.powerkeeper",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.xiaomi.payment",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.mipay.wallet.id",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.mipay.wallet",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.micredit.in",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.android.updater",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    }
+  ]
+}

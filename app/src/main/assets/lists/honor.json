@@ -1,0 +1,281 @@
+{
+  "id": "honor",
+  "label": "Honor / Huawei (MagicOS / EMUI)",
+  "packages": [
+    {
+      "pkg": "com.hihonor.magazine",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.huawei.magazine",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.hihonor.tips",
+      "tier": "ADVANCED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.huawei.android.tips",
+      "tier": "ADVANCED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.hihonor.compass",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.huawei.compass",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.phoneservice",
+      "tier": "ADVANCED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.huawei.phoneservice",
+      "tier": "ADVANCED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.hihonor.appmarket",
+      "tier": "ADVANCED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.huawei.appmarket",
+      "tier": "ADVANCED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.hihonor.browser",
+      "tier": "ADVANCED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.huawei.browser",
+      "tier": "ADVANCED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.hihonor.android.pushagent",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.huawei.android.pushagent",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.hihonor.lens",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.notepad",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.huawei.notepad",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.calculator",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.huawei.calculator",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.filemanager",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.search",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.gameassistant",
+      "tier": "ADVANCED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.hihonor.collectcenter",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.android.instantshare",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.hihonor.android.mirrorshare",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.hihonor.airlink",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.hihonor.assistant",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.hihonor.pcassistant",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.hisight",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.detectrepair",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.calendar",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.soundrecorder",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.android.chr",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.huawei.android.chr",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.hihonor.hncloud",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.huawei.android.hwcloud",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.hihonor.assetsync",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.hihonor.searchservice",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.privatespace",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.parallelspace",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.hihonor.android.launcher",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.huawei.android.launcher",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.hihonor.id",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.huawei.hwid",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.hihonor.hnstartupguide",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.huawei.hwstartupguide",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.hihonor.keychain",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.hihonor.hnpanpayservice",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.huawei.wallet",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.hihonor.ouc",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.huawei.android.hwouc",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.hihonor.systemappsupdater",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.hihonor.dsdscardmanager",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.hihonor.systemmanager",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.huawei.systemmanager",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "id": "samsung",
+  "label": "Samsung (One UI)",
+  "packages": [
+    {
+      "pkg": "com.samsung.android.app.tips",
+      "tier": "RECOMMENDED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.samsung.android.voc",
+      "tier": "RECOMMENDED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.samsung.android.tvplus",
+      "tier": "RECOMMENDED",
+      "reason": "oem_media"
+    },
+    {
+      "pkg": "com.samsung.android.app.spage",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.samsung.android.arzone",
+      "tier": "RECOMMENDED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.aremoji",
+      "tier": "RECOMMENDED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.aremojieditor",
+      "tier": "RECOMMENDED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.ardrawing",
+      "tier": "RECOMMENDED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.kidsinstaller",
+      "tier": "RECOMMENDED",
+      "reason": "kids"
+    },
+    {
+      "pkg": "com.sec.android.app.kidshome",
+      "tier": "RECOMMENDED",
+      "reason": "kids"
+    },
+    {
+      "pkg": "com.samsung.android.bixby.agent",
+      "tier": "RECOMMENDED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.samsung.android.game.gamehome",
+      "tier": "RECOMMENDED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.samsung.android.rubin.app",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.samsung.android.bixby.wakeup",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.samsung.android.livestickers",
+      "tier": "ADVANCED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.stickercenter",
+      "tier": "ADVANCED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.service.livedrawing",
+      "tier": "ADVANCED",
+      "reason": "ar"
+    },
+    {
+      "pkg": "com.samsung.android.privateshare",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.samsung.android.app.watchmanagerstub",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.samsung.android.game.gametools",
+      "tier": "ADVANCED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.sec.android.app.sbrowser",
+      "tier": "ADVANCED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.samsung.android.email.provider",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.sec.android.easyMover",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.samsung.android.visionintelligence",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.samsung.android.bixbyvision.framework",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.sec.android.diagmonagent",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.samsung.android.forest",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.samsung.android.game.gos",
+      "tier": "EXPERT",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.samsung.android.app.routines",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.samsung.android.scloud",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.samsung.android.fmm",
+      "tier": "EXPERT",
+      "reason": "find_device"
+    },
+    {
+      "pkg": "com.samsung.android.honeyboard",
+      "tier": "EXPERT",
+      "reason": "keyboard"
+    },
+    {
+      "pkg": "com.samsung.android.mobileservice",
+      "tier": "EXPERT",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.sec.android.app.samsungapps",
+      "tier": "EXPERT",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.samsung.android.lool",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.samsung.android.aicore",
+      "tier": "EXPERT",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.sec.android.app.launcher",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.samsung.android.dialer",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.samsung.android.incallui",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.sec.imsservice",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.wssyncmldm",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.sec.android.soagent",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.samsung.android.spay",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.samsung.android.spayfw",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.osp.app.signin",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.samsung.android.samsungaccount",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.sec.android.app.SecSetupWizard",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.samsung.android.authfw",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    }
+  ]
+}

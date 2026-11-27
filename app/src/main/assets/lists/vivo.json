@@ -1,0 +1,201 @@
+{
+  "id": "vivo",
+  "label": "vivo / iQOO (Funtouch / OriginOS)",
+  "packages": [
+    {
+      "pkg": "com.vivo.magazine",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.ibimuyu.lockscreen",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.android.bbklog",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.bbk.iqoo.logsystem",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.vivo.dream.clock",
+      "tier": "RECOMMENDED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.dream.music",
+      "tier": "RECOMMENDED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.dream.weather",
+      "tier": "RECOMMENDED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.vivokaraoke",
+      "tier": "RECOMMENDED",
+      "reason": "oem_media"
+    },
+    {
+      "pkg": "com.vivo.feedback",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.vivo.Tips",
+      "tier": "RECOMMENDED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.vivo.nps",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.vivo.space",
+      "tier": "ADVANCED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.vivo.website",
+      "tier": "ADVANCED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.vivo.browser",
+      "tier": "ADVANCED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.vivo.appstore",
+      "tier": "ADVANCED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.bbk.theme",
+      "tier": "ADVANCED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.bbk.theme.resources",
+      "tier": "ADVANCED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.vivo.easyshare",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.vivo.assistant",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.android.bbkmusic",
+      "tier": "ADVANCED",
+      "reason": "oem_media"
+    },
+    {
+      "pkg": "com.vivo.email",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.compass",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.gamewatch",
+      "tier": "ADVANCED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.vivo.weather",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.floatingball",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.android.bbksoundrecorder",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.simplelauncher",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.vivo.globalsearch",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.bbk.cloud",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.iqoo.secure",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.smartshot",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.safecenter",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.wallet",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.vivo.unionpay",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.bbk.launcher2",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.launcher",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.upslide",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.sps",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.vivo.account",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    }
+  ]
+}

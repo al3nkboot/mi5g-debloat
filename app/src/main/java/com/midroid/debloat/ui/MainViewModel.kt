@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,11 +16,18 @@ import com.midroid.debloat.data.ActionResult
 import com.midroid.debloat.data.AppItem
 import com.midroid.debloat.data.Debloater
 import com.midroid.debloat.data.LogEntry
+import com.midroid.debloat.data.OemCatalog
+import com.midroid.debloat.data.OemId
 import com.midroid.debloat.data.Outcome
 import com.midroid.debloat.data.RemovalLog
+import com.midroid.debloat.data.Tier
+import com.midroid.debloat.data.applyPreset
+import com.midroid.debloat.data.classify
 import com.midroid.debloat.data.isPackageMissing
+import com.midroid.debloat.data.mapOem
 import com.midroid.debloat.data.maySelect
 import com.midroid.debloat.data.onInstalledList
+import com.midroid.debloat.data.tierOf
 import com.midroid.debloat.data.scan as scanApps
 import com.midroid.debloat.shizuku.ShizukuRunner
 import com.midroid.debloat.shizuku.ShizukuState
@@ -43,6 +51,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val debloater = Debloater(ShizukuRunner, log)
     private val prefs = app.getSharedPreferences("settings", Context.MODE_PRIVATE)
     private val selfPkg = app.packageName
+    private val catalog = OemCatalog(app.assets)
 
     var screen by mutableStateOf(Screen.HOME)
         private set
@@ -56,6 +65,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         private set
     var allowUnsafe by mutableStateOf(prefs.getBoolean(ALLOW_UNSAFE, false))
         private set
+    var selectedOem by mutableStateOf(mapOem(Build.MANUFACTURER, Build.BRAND))
+        private set
+    var hasScanned by mutableStateOf(false)
+        private set
+    val detectedBrand: String = listOf(Build.MANUFACTURER, Build.BRAND)
+        .map { it.trim() }
+        .filter { it.isNotEmpty() }
+        .distinctBy { it.lowercase(Locale.ROOT) }
+        .joinToString(" / ")
+        .ifEmpty { "unknown" }
+    val presetEnabled: Boolean
+        get() = state == ShizukuState.READY && hasScanned && !busy &&
+            items.any { it.isSystem && it.tier == Tier.RECOMMENDED }
     var busy by mutableStateOf(false)
         private set
     var homeMessage by mutableStateOf<String?>(null)
@@ -129,17 +151,42 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun showAbout() { screen = Screen.ABOUT }
 
     private fun reload() {
-        items = scanApps(getApplication())
+        items = scanApps(getApplication(), catalog, selectedOem)
         selected = emptySet()
     }
 
     fun scan() {
         reload()
+        hasScanned = true
         homeMessage = count(R.plurals.scanned_count, items.size)
     }
 
     private fun selectable(item: AppItem): Boolean =
         onInstalledList(item.isSystem, item.pkg, selfPkg) && maySelect(item.tier, allowUnsafe)
+
+    private fun dropIllegalSelections() {
+        selected = selected.filter { pkg ->
+            items.firstOrNull { it.pkg == pkg }?.let(::selectable) == true
+        }.toSet()
+    }
+
+    fun selectOem(oem: OemId) {
+        if (selectedOem == oem) return
+        selectedOem = oem
+        items = items.map { item ->
+            val (tier, reason) = classify(item.pkg, catalog, oem)
+            item.copy(tier = tier, reason = reason)
+        }
+        dropIllegalSelections()
+    }
+
+    fun tierFor(pkg: String): Tier = tierOf(pkg, catalog, selectedOem)
+
+    fun applyRecommendedPreset() {
+        if (!presetEnabled) return
+        selected = applyPreset(items, catalog, selectedOem)
+        homeMessage = count(R.plurals.preset_count, selected.size)
+    }
 
     fun toggle(pkg: String) {
         val item = items.firstOrNull { it.pkg == pkg } ?: return
@@ -157,9 +204,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun updateAllowUnsafe(allow: Boolean) {
         prefs.edit().putBoolean(ALLOW_UNSAFE, allow).apply()
         allowUnsafe = allow
-        selected = selected.filter { pkg ->
-            items.firstOrNull { it.pkg == pkg }?.let(::selectable) == true
-        }.toSet()
+        dropIllegalSelections()
     }
 
     fun askRemove() {

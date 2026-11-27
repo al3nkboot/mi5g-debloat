@@ -1,0 +1,306 @@
+{
+  "id": "coloros",
+  "label": "Realme / OPPO / OnePlus (realme UI / ColorOS / OxygenOS)",
+  "packages": [
+    {
+      "pkg": "com.heytap.browser",
+      "tier": "RECOMMENDED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.nearme.browser",
+      "tier": "RECOMMENDED",
+      "reason": "oem_browser"
+    },
+    {
+      "pkg": "com.nearme.gamecenter",
+      "tier": "RECOMMENDED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.heytap.pictorial",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.heytap.market",
+      "tier": "RECOMMENDED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.oppo.market",
+      "tier": "RECOMMENDED",
+      "reason": "oem_store"
+    },
+    {
+      "pkg": "com.oplus.games",
+      "tier": "RECOMMENDED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.coloros.gamespaceui",
+      "tier": "RECOMMENDED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.coloros.gamespace",
+      "tier": "RECOMMENDED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.heytap.themestore",
+      "tier": "RECOMMENDED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.oplus.themestore",
+      "tier": "RECOMMENDED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.nearme.themespace",
+      "tier": "RECOMMENDED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.nearme.themestore",
+      "tier": "RECOMMENDED",
+      "reason": "oem_themes"
+    },
+    {
+      "pkg": "com.realmecomm.app",
+      "tier": "RECOMMENDED",
+      "reason": "oem_community"
+    },
+    {
+      "pkg": "com.heytap.mcs",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.heytap.music",
+      "tier": "ADVANCED",
+      "reason": "oem_media"
+    },
+    {
+      "pkg": "com.heytap.accessory",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.coloros.assistantscreen",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.coloros.oshare",
+      "tier": "ADVANCED",
+      "reason": "share"
+    },
+    {
+      "pkg": "com.coloros.compass2",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.coloros.childrenspace",
+      "tier": "ADVANCED",
+      "reason": "kids"
+    },
+    {
+      "pkg": "com.coloros.floatassistant",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.coloros.ocrscanner",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.coloros.operationManual",
+      "tier": "ADVANCED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.coloros.soundrecorder",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.coloros.phonemanager",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.oplus.aiplaymate",
+      "tier": "ADVANCED",
+      "reason": "oem_games"
+    },
+    {
+      "pkg": "com.coloros.focusmode",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.coloros.healthcheck",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.heytap.speechassist",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.coloros.speechassist",
+      "tier": "ADVANCED",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.oplus.logkit",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.oplus.crashbox",
+      "tier": "ADVANCED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.oppo.operationManual",
+      "tier": "ADVANCED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.heytap.cloud",
+      "tier": "EXPERT",
+      "reason": "cloud"
+    },
+    {
+      "pkg": "com.nearme.statistics.rom",
+      "tier": "EXPERT",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.oplus.statistics.rom",
+      "tier": "EXPERT",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.coloros.pictorial",
+      "tier": "EXPERT",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.coloros.smartsidebar",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.heytap.usercenter",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.oplus.account",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.oppo.usercenter",
+      "tier": "UNSAFE",
+      "reason": "account_service"
+    },
+    {
+      "pkg": "com.oplus.camera",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.cameraextensions",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.callrecorder",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.atlas",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.metis",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.athena",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.onetrace",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.screenrecorder",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.coloros.safecenter",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.safecenter",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.securitypermission",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.ota",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oplus.romupdate",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.coloros.bootreg",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.coloros.lockassistant",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.coloros.securepay",
+      "tier": "UNSAFE",
+      "reason": "payment"
+    },
+    {
+      "pkg": "com.coloros.weather2",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    },
+    {
+      "pkg": "com.oppo.launcher",
+      "tier": "UNSAFE",
+      "reason": "unsafe"
+    }
+  ]
+}

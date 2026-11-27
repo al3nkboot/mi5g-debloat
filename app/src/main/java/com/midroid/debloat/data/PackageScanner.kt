@@ -3,7 +3,6 @@ package com.midroid.debloat.data
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.annotation.StringRes
-import com.midroid.debloat.R
 
 data class AppItem(
     val pkg: String,
@@ -19,20 +18,22 @@ fun isSystemApp(flags: Int): Boolean =
 
 fun displayLabel(label: String, pkg: String): String = label.trim().ifEmpty { pkg }
 
-fun scan(context: Context): List<AppItem> {
+fun classify(pkg: String, catalog: OemCatalog, selected: OemId): Pair<Tier, Int?> =
+    tierOf(pkg, catalog, selected) to reasonOf(pkg, catalog, selected)?.let(::reasonResource)
+
+fun scan(context: Context, catalog: OemCatalog, selected: OemId): List<AppItem> {
     val pm = context.packageManager
     val selfPkg = context.packageName
-    val reasons = (SAFE_LIST + ADVANCED_LIST + EXPERT_LIST).associate { it.pkg to it.reason }
     return pm.getInstalledApplications(0)
         .filter { onInstalledList(isSystemApp(it.flags), it.packageName, selfPkg) }
         .map { app ->
-            val tier = tierOf(app.packageName)
+            val (tier, reason) = classify(app.packageName, catalog, selected)
             AppItem(
                 app.packageName,
                 app.loadLabel(pm).toString(),
                 tier,
                 isSystem = true,
-                reason = if (tier == Tier.UNSAFE) R.string.reason_unsafe else reasons[app.packageName],
+                reason = reason,
             )
         }
         .sortedBy { it.label }

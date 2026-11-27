@@ -6,6 +6,11 @@ Mi5G Debloat (Arabic: إزالة التطبيقات الزائدة) removes or d
 
 Distributed via GitHub, not Google Play.
 
+Version 0.2.0 ships ready-made package lists for Samsung, Xiaomi, ColorOS, Honor/Huawei,
+vivo, and Google/AOSP. It detects the phone maker automatically, and you can switch to another
+brand or **All**. **Select recommended** only selects Recommended apps for review; it never
+removes apps by itself.
+
 ## Requirements
 
 - Android 8.0 (API 26) or newer.

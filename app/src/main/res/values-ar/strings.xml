@@ -24,6 +24,17 @@
 
     <string name="scan">فحص</string>
     <string name="scan_hint">الفحص لا يتطلب Shizuku، أما الإزالة فتتطلبه.</string>
+    <string name="brand_list">قائمة الشركة</string>
+    <string name="brand_all">الكل</string>
+    <string name="brand_samsung">سامسونج (One UI)</string>
+    <string name="brand_xiaomi">شاومي / ريدمي / بوكو</string>
+    <string name="brand_coloros">ريلمي / أوبو / ون بلس</string>
+    <string name="brand_honor">هونر / هواوي</string>
+    <string name="brand_vivo">فيفو / iQOO</string>
+    <string name="brand_google">جوجل / AOSP</string>
+    <string name="brand_detected">المكتشفة: %1$s</string>
+    <string name="preset">تحديد الموصى بها</string>
+    <string name="preset_hint">يحدّد التطبيقات الموصى بها في هذه القائمة فقط. راجعها قبل الإزالة. لا يُزال شيء تلقائياً.</string>
     <plurals name="scanned_count">
         <item quantity="zero">لم يتم العثور على %d تطبيق</item>
         <item quantity="one">تم العثور على %d تطبيق</item>
@@ -31,6 +42,14 @@
         <item quantity="few">تم العثور على %d تطبيقات</item>
         <item quantity="many">تم العثور على %d تطبيقًا</item>
         <item quantity="other">تم العثور على %d تطبيق</item>
+    </plurals>
+    <plurals name="preset_count">
+        <item quantity="zero">تم تحديد %d تطبيقات موصى بها. راجع القائمة، ثم اضغط «إزالة المحدد».</item>
+        <item quantity="one">تم تحديد %d تطبيق موصى به. راجع القائمة، ثم اضغط «إزالة المحدد».</item>
+        <item quantity="two">تم تحديد %d تطبيقين موصى بهما. راجع القائمة، ثم اضغط «إزالة المحدد».</item>
+        <item quantity="few">تم تحديد %d تطبيقات موصى بها. راجع القائمة، ثم اضغط «إزالة المحدد».</item>
+        <item quantity="many">تم تحديد %d تطبيقًا موصى به. راجع القائمة، ثم اضغط «إزالة المحدد».</item>
+        <item quantity="other">تم تحديد %d تطبيق موصى به. راجع القائمة، ثم اضغط «إزالة المحدد».</item>
     </plurals>
     <string name="tab_safe">آمنة (%1$d)</string>
     <string name="tab_user">تطبيقات المستخدم (%1$d)</string>
@@ -165,5 +184,28 @@
     <string name="reason_nearme_statistics_rom">إحصاءات استخدام وقياس عن بُعد لنظام ColorOS</string>
     <string name="reason_coloros_pictorial">خدمة خلفيات ومحتوى شاشة القفل في ColorOS</string>
     <string name="reason_coloros_smartsidebar">ميزة الشريط الجانبي الذكي في ColorOS</string>
+    <string name="reason_ads">إعلانات / تحليلات</string>
+    <string name="reason_partner_stub">مكوّن شريك مثبت مسبقاً</string>
+    <string name="reason_social">تطبيق تواصل مثبت مسبقاً</string>
+    <string name="reason_oem_store">متجر تطبيقات الشركة</string>
+    <string name="reason_oem_browser">متصفح الشركة</string>
+    <string name="reason_oem_themes">متجر السمات</string>
+    <string name="reason_oem_games">مركز الألعاب</string>
+    <string name="reason_oem_media">موسيقى أو فيديو من الشركة</string>
+    <string name="reason_oem_community">تطبيق مجتمع أو متجر</string>
+    <string name="reason_oem_tips">نصائح أو دليل المستخدم</string>
+    <string name="reason_lockscreen_feed">تغذية أو مجلة شاشة القفل</string>
+    <string name="reason_ar">الواقع المعزز أو الملصقات</string>
+    <string name="reason_kids">وضع الأطفال</string>
+    <string name="reason_cloud">النسخ السحابي للشركة</string>
+    <string name="reason_assistant">المساعد الصوتي</string>
+    <string name="reason_share">المشاركة من الشركة</string>
+    <string name="reason_optional_google">تطبيق Google اختياري</string>
+    <string name="reason_optional_tool">أداة اختيارية</string>
+    <string name="reason_telemetry">تحليلات أو تشخيص</string>
+    <string name="reason_keyboard">لوحة المفاتيح — ثبّت بديلاً أولاً</string>
+    <string name="reason_find_device">العثور على الجهاز</string>
+    <string name="reason_account_service">خدمة الحساب</string>
+    <string name="reason_payment">الدفع أو المحفظة</string>
     <string name="reason_unsafe">مكوّن أساسي في النظام؛ قد يؤدي تعطيله إلى تعطيل الهاتف.</string>
 </resources>

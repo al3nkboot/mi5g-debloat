@@ -24,9 +24,24 @@
 
     <string name="scan">Scan</string>
     <string name="scan_hint">Scanning needs no Shizuku; removal does.</string>
+    <string name="brand_list">Brand list</string>
+    <string name="brand_all">All</string>
+    <string name="brand_samsung">Samsung (One UI)</string>
+    <string name="brand_xiaomi">Xiaomi / Redmi / POCO</string>
+    <string name="brand_coloros">Realme / OPPO / OnePlus</string>
+    <string name="brand_honor">Honor / Huawei</string>
+    <string name="brand_vivo">vivo / iQOO</string>
+    <string name="brand_google">Google / AOSP</string>
+    <string name="brand_detected">Detected: %1$s</string>
+    <string name="preset">Select recommended</string>
+    <string name="preset_hint">Selects this list’s Recommended apps only. Review them before removing. Nothing is removed automatically.</string>
     <plurals name="scanned_count">
         <item quantity="one">Found %d app</item>
         <item quantity="other">Found %d apps</item>
+    </plurals>
+    <plurals name="preset_count">
+        <item quantity="one">%d recommended app selected. Review the list, then tap Remove selected.</item>
+        <item quantity="other">%d recommended apps selected. Review the list, then tap Remove selected.</item>
     </plurals>
     <string name="tab_safe">Safe (%1$d)</string>
     <string name="tab_user">User apps (%1$d)</string>
@@ -146,6 +161,29 @@
     <string name="reason_nearme_statistics_rom">ColorOS ROM usage statistics and telemetry</string>
     <string name="reason_coloros_pictorial">ColorOS lock-screen wallpaper and content service</string>
     <string name="reason_coloros_smartsidebar">ColorOS Smart Sidebar system feature</string>
+    <string name="reason_ads">Ads / analytics</string>
+    <string name="reason_partner_stub">Preinstalled partner stub</string>
+    <string name="reason_social">Preinstalled social app</string>
+    <string name="reason_oem_store">OEM app store</string>
+    <string name="reason_oem_browser">OEM browser</string>
+    <string name="reason_oem_themes">Theme store</string>
+    <string name="reason_oem_games">Games hub</string>
+    <string name="reason_oem_media">OEM music or video</string>
+    <string name="reason_oem_community">Community or shop app</string>
+    <string name="reason_oem_tips">Tips or user guide</string>
+    <string name="reason_lockscreen_feed">Lock-screen feed or magazine</string>
+    <string name="reason_ar">AR or stickers</string>
+    <string name="reason_kids">Kids mode</string>
+    <string name="reason_cloud">OEM cloud backup</string>
+    <string name="reason_assistant">Voice assistant</string>
+    <string name="reason_share">OEM sharing</string>
+    <string name="reason_optional_google">Optional Google app</string>
+    <string name="reason_optional_tool">Optional tool</string>
+    <string name="reason_telemetry">Analytics or diagnostics</string>
+    <string name="reason_keyboard">Keyboard — install another first</string>
+    <string name="reason_find_device">Find My Device</string>
+    <string name="reason_account_service">Account service</string>
+    <string name="reason_payment">Payment or wallet</string>
     <string name="reason_unsafe">Core system component; disabling it may break the phone.</string>
 
     <string name="url_shizuku_download" translatable="false">https://shizuku.rikka.app/download/</string>

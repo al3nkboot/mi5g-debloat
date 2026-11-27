@@ -1,10 +1,9 @@
 package com.midroid.debloat
 
 import android.content.pm.ApplicationInfo
-import com.midroid.debloat.data.ADVANCED_LIST
-import com.midroid.debloat.data.EXPERT_LIST
 import com.midroid.debloat.data.LogAction
-import com.midroid.debloat.data.SAFE_LIST
+import com.midroid.debloat.data.OemCatalog
+import com.midroid.debloat.data.OemId
 import com.midroid.debloat.data.Tier
 import com.midroid.debloat.data.defaultAction
 import com.midroid.debloat.data.isSystemApp
@@ -16,37 +15,43 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 
 class ClassifierTest {
     private val self = "com.midroid.debloat"
+    private val catalog = OemCatalog(File("src/main/assets/lists"))
+
+    private fun tier(pkg: String, selected: OemId = OemId.ALL): Tier = tierOf(pkg, catalog, selected)
 
     @Test
     fun recommendedSystemPackageIsRecommended() {
-        assertEquals(Tier.RECOMMENDED, tierOf("com.miui.analytics"))
+        assertEquals(Tier.RECOMMENDED, tier("com.miui.analytics"))
         assertTrue(onInstalledList(isSystem = true, pkg = "com.miui.analytics", selfPkg = self))
     }
 
     @Test
     fun nonSystemRecommendedPackageIsClassifiedButHidden() {
-        assertEquals(Tier.RECOMMENDED, tierOf("com.realmecomm.app"))
+        assertEquals(Tier.RECOMMENDED, tier("com.realmecomm.app"))
         assertFalse(onInstalledList(isSystem = false, pkg = "com.realmecomm.app", selfPkg = self))
     }
 
     @Test
     fun unknownSystemPackageIsUnknown() {
-        assertEquals(Tier.UNKNOWN, tierOf("com.example.hidden"))
+        assertEquals(Tier.UNKNOWN, tier("com.example.hidden"))
         assertTrue(onInstalledList(isSystem = true, pkg = "com.example.hidden", selfPkg = self))
     }
 
     @Test
-    fun unsafeBeatsCustomRecommendedSetAndMatchesPrefixes() {
-        val safe = setOf("com.android.systemui", "com.android.providers.contacts", "com.android.settings")
-        assertEquals(Tier.UNSAFE, tierOf("com.android.systemui", safe))
-        assertEquals(Tier.UNSAFE, tierOf("com.android.providers.contacts", safe))
-        assertEquals(Tier.UNSAFE, tierOf("com.android.providers.contacts.foo", safe))
-        assertEquals(Tier.UNSAFE, tierOf("android", safe + "android"))
+    fun unsafeBeatsCatalogEntriesAndMatchesPrefixes() {
+        assertEquals(Tier.UNSAFE, tier("com.android.systemui"))
+        assertEquals(Tier.UNSAFE, tier("com.android.providers.contacts"))
+        assertEquals(Tier.UNSAFE, tier("com.android.providers.contacts.foo"))
+        assertEquals(Tier.UNSAFE, tier("android"))
         assertTrue(isUnsafe("com.oplus.camera"))
         assertTrue(isUnsafe("com.android.internal.systemui.navigation"))
+        assertTrue(isUnsafe("com.samsung.android.knox.securefolder"))
+        assertTrue(isUnsafe("com.samsung.knox.securefolder"))
+        assertTrue(isUnsafe("com.sec.enterprise.knox"))
     }
 
     @Test
@@ -81,22 +86,28 @@ class ClassifierTest {
     }
 
     @Test
-    fun advancedAndExpertListsAreClassified() {
-        ADVANCED_LIST.forEach { assertEquals(it.pkg, Tier.ADVANCED, tierOf(it.pkg)) }
-        EXPERT_LIST.forEach { assertEquals(it.pkg, Tier.EXPERT, tierOf(it.pkg)) }
-        assertEquals(13, ADVANCED_LIST.size)
-        assertEquals(4, EXPERT_LIST.size)
-        assertEquals(Tier.ADVANCED, tierOf("com.heytap.mcs"))
-        assertEquals(Tier.EXPERT, tierOf("com.coloros.smartsidebar"))
+    fun migratedAdvancedAndExpertEntriesAreClassified() {
+        catalog.lists.flatMap { it.packages }
+            .filter { it.tier == Tier.ADVANCED || it.tier == Tier.EXPERT }
+            .filterNot { isUnsafe(it.pkg) }
+            .forEach { assertEquals(it.pkg, it.tier, tier(it.pkg)) }
+        assertEquals(Tier.RECOMMENDED, tier("com.heytap.market"))
+        assertEquals(Tier.ADVANCED, tier("com.heytap.mcs"))
+        assertEquals(Tier.EXPERT, tier("com.heytap.cloud"))
+        assertEquals(Tier.EXPERT, tier("com.coloros.smartsidebar"))
+        assertEquals(Tier.UNSAFE, tier("com.coloros.safecenter"))
     }
 
     @Test
-    fun recommendedListIsCleanAndNeverUnsafe() {
-        val pkgs = SAFE_LIST.map { it.pkg }
-        assertEquals(pkgs.size, pkgs.toSet().size)
-        pkgs.forEach { pkg ->
-            assertFalse("$pkg is unsafe", isUnsafe(pkg))
-            assertTrue("$pkg is malformed", PKG.matches(pkg))
+    fun recommendedCatalogIsCleanAndNeverUnsafe() {
+        catalog.lists.forEach { list ->
+            val pkgs = list.packages.map { it.pkg }
+            assertEquals(pkgs.size, pkgs.toSet().size)
+            pkgs.forEach { pkg -> assertTrue("$pkg is malformed", PKG.matches(pkg)) }
+        }
+        catalog.lists.flatMap { it.packages }.filter { it.tier == Tier.RECOMMENDED }.forEach {
+            assertFalse("${it.pkg} is unsafe", isUnsafe(it.pkg))
+            assertEquals(it.pkg, Tier.RECOMMENDED, tier(it.pkg))
         }
     }
 

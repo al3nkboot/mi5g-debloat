@@ -1,0 +1,151 @@
+{
+  "id": "google",
+  "label": "Google / AOSP",
+  "packages": [
+    {
+      "pkg": "com.facebook.appmanager",
+      "tier": "RECOMMENDED",
+      "reason": "partner_stub"
+    },
+    {
+      "pkg": "com.facebook.services",
+      "tier": "RECOMMENDED",
+      "reason": "partner_stub"
+    },
+    {
+      "pkg": "com.facebook.system",
+      "tier": "RECOMMENDED",
+      "reason": "partner_stub"
+    },
+    {
+      "pkg": "com.facebook.katana",
+      "tier": "RECOMMENDED",
+      "reason": "social"
+    },
+    {
+      "pkg": "com.netflix.partner.activation",
+      "tier": "RECOMMENDED",
+      "reason": "partner_stub"
+    },
+    {
+      "pkg": "com.glance.internet",
+      "tier": "RECOMMENDED",
+      "reason": "lockscreen_feed"
+    },
+    {
+      "pkg": "com.google.android.feedback",
+      "tier": "RECOMMENDED",
+      "reason": "telemetry"
+    },
+    {
+      "pkg": "com.microsoft.appmanager",
+      "tier": "RECOMMENDED",
+      "reason": "partner_stub"
+    },
+    {
+      "pkg": "com.netflix.mediaclient",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.microsoft.skydrive",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.videos",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.youtube.music",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.docs",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.tachyon",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.magazines",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.podcasts",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.tips",
+      "tier": "ADVANCED",
+      "reason": "oem_tips"
+    },
+    {
+      "pkg": "com.google.android.apps.books",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.play.games",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.android.chrome",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.subscriptions.red",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.gm",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.youtube",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.maps",
+      "tier": "ADVANCED",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.apps.wellbeing",
+      "tier": "ADVANCED",
+      "reason": "optional_tool"
+    },
+    {
+      "pkg": "com.google.android.apps.photos",
+      "tier": "EXPERT",
+      "reason": "optional_google"
+    },
+    {
+      "pkg": "com.google.android.googlequicksearchbox",
+      "tier": "EXPERT",
+      "reason": "assistant"
+    },
+    {
+      "pkg": "com.google.android.inputmethod.latin",
+      "tier": "EXPERT",
+      "reason": "keyboard"
+    },
+    {
+      "pkg": "com.google.android.marvin.talkback",
+      "tier": "EXPERT",
+      "reason": "optional_tool"
+    }
+  ]
+}

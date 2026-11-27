@@ -68,10 +68,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.midroid.debloat.data.AppItem
 import com.midroid.debloat.data.LogAction
 import com.midroid.debloat.data.LogEntry
+import com.midroid.debloat.data.OemId
 import com.midroid.debloat.data.Tier
 import com.midroid.debloat.data.displayLabel
 import com.midroid.debloat.data.maySelect
-import com.midroid.debloat.data.tierOf
 import com.midroid.debloat.shizuku.ShizukuState
 import com.midroid.debloat.ui.HomeTab
 import com.midroid.debloat.ui.MainViewModel
@@ -218,7 +218,7 @@ private fun HomeScreen(vm: MainViewModel) {
     }
     val visibleLog = vm.logEntries.filter {
         val label = displayLabel(labels[it.pkg] ?: it.pkg, it.pkg)
-        matchesQuery(label, it.pkg, query) && (tierFilter == null || tierOf(it.pkg) == tierFilter)
+        matchesQuery(label, it.pkg, query) && (tierFilter == null || vm.tierFor(it.pkg) == tierFilter)
     }
 
     Scaffold(
@@ -279,6 +279,14 @@ private fun HomeScreen(vm: MainViewModel) {
                         onClick = vm::showUninstalled,
                         text = { Text(stringResource(R.string.tab_uninstalled, vm.logEntries.size)) },
                     )
+                }
+            }
+            if (vm.homeTab == HomeTab.INSTALLED) {
+                item {
+                    BrandControls(vm) {
+                        vm.applyRecommendedPreset()
+                        if (vm.selected.isNotEmpty()) tierFilter = Tier.RECOMMENDED
+                    }
                 }
             }
             item {
@@ -381,6 +389,45 @@ private fun tierLabelRes(tier: Tier): Int = when (tier) {
     Tier.EXPERT -> R.string.tier_expert
     Tier.UNSAFE -> R.string.tier_unsafe
     Tier.UNKNOWN -> R.string.tier_unknown
+}
+
+private fun brandLabelRes(oem: OemId): Int = when (oem) {
+    OemId.SAMSUNG -> R.string.brand_samsung
+    OemId.XIAOMI -> R.string.brand_xiaomi
+    OemId.COLOROS -> R.string.brand_coloros
+    OemId.HONOR -> R.string.brand_honor
+    OemId.VIVO -> R.string.brand_vivo
+    OemId.GOOGLE -> R.string.brand_google
+    OemId.ALL -> R.string.brand_all
+}
+
+@Composable
+private fun BrandControls(vm: MainViewModel, onPreset: () -> Unit) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Text(
+            stringResource(R.string.brand_detected, vm.detectedBrand),
+            style = MaterialTheme.typography.bodySmall,
+        )
+        Text(stringResource(R.string.brand_list), style = MaterialTheme.typography.titleSmall)
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+            OemId.values().forEachIndexed { index, oem ->
+                if (index > 0) Spacer(Modifier.width(8.dp))
+                FilterChip(
+                    selected = vm.selectedOem == oem,
+                    onClick = { vm.selectOem(oem) },
+                    label = { Text(stringResource(brandLabelRes(oem))) },
+                )
+            }
+        }
+        Button(onClick = onPreset, enabled = vm.presetEnabled) {
+            Text(stringResource(R.string.preset))
+        }
+        Text(
+            stringResource(R.string.preset_hint),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(top = 4.dp),
+        )
+    }
 }
 
 @Composable
