@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Shizuku
+    url: https://shizuku.rikka.app/
+    about: Shizuku setup and downloads (required by this app)
+  - name: Latest release
+    url: https://github.com/al3nkboot/mi5g-debloat/releases/latest
+    about: Download the current APK

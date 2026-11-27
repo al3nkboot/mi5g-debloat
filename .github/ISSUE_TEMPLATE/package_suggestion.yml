@@ -1,0 +1,69 @@
+name: Package suggestion
+description: Propose adding or changing a package in a brand list
+title: "[Package] "
+labels: ["package-list"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Recommended entries need **two independent public sources**. Do not copy UAD-ng, Canta, or Poda lists or descriptions. If you are unsure, suggest Advanced or Expert.
+  - type: input
+    id: pkg
+    attributes:
+      label: Package name
+      placeholder: com.example.app
+    validations:
+      required: true
+  - type: dropdown
+    id: brand
+    attributes:
+      label: Brand list
+      options:
+        - Samsung (One UI)
+        - Xiaomi / Redmi / POCO
+        - Realme / OPPO / OnePlus (ColorOS)
+        - Honor / Huawei
+        - vivo / iQOO
+        - Google / AOSP (or partner stub)
+        - Unsure
+    validations:
+      required: true
+  - type: dropdown
+    id: tier
+    attributes:
+      label: Suggested tier
+      options:
+        - Recommended
+        - Advanced
+        - Expert
+        - Unsafe
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What is this package?
+      description: A short factual description in your own words.
+    validations:
+      required: true
+  - type: input
+    id: source1
+    attributes:
+      label: Source 1
+      description: Public URL (vendor doc, first-hand report, or a permissive article).
+    validations:
+      required: true
+  - type: input
+    id: source2
+    attributes:
+      label: Source 2
+      description: Required for Recommended. A second independent URL. Optional for other tiers, but helpful.
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: These sources are not UAD-ng, Canta, or a reprint of those lists.
+          required: true
+        - label: This is not a core setup, account, security, telephony, launcher, System UI, OTA, or payment package listed as Recommended.
+          required: true

@@ -1,0 +1,60 @@
+name: Bug report
+description: Something did not work as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Please fill in the device and Shizuku fields. Do not attach keystores or passwords.
+  - type: input
+    id: version
+    attributes:
+      label: App version
+      placeholder: "0.2.0"
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      description: Brand and model, for example Realme 15 5G or Galaxy S24.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Android / OS
+      description: Android version and skin, for example Android 15, realme UI / ColorOS, or One UI 7.
+    validations:
+      required: true
+  - type: input
+    id: shizuku
+    attributes:
+      label: Shizuku
+      description: Installed version, and whether it was running with permission granted.
+      placeholder: "13.x, running, permission granted"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste the in-app message or command output if a removal or restore failed. Remove any personal data.
