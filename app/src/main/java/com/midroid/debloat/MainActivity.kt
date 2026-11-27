@@ -2,18 +2,14 @@
 
 package com.midroid.debloat
 
-import android.app.Activity
-import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -81,15 +77,8 @@ import com.midroid.debloat.ui.MainViewModel
 import com.midroid.debloat.ui.Screen
 import java.text.DateFormat
 import java.util.Date
-import java.util.Locale
 
-class MainActivity : ComponentActivity() {
-    override fun attachBaseContext(newBase: Context) {
-        val config = Configuration(newBase.resources.configuration)
-        config.setLocale(Locale.forLanguageTag(currentLanguageTag()))
-        super.attachBaseContext(newBase.createConfigurationContext(config))
-    }
-
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         setContent { DebloatTheme { MainScreen() } }
@@ -126,11 +115,8 @@ private fun openPlayStore(context: Context, pkg: String) {
 private fun currentLanguageTag(): String =
     if (AppCompatDelegate.getApplicationLocales().toLanguageTags().startsWith("en")) "en" else "ar"
 
-private fun chooseLanguage(context: Context, tag: String) {
+private fun chooseLanguage(tag: String) {
     AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
-    var base = context
-    while (base is ContextWrapper) base = base.baseContext
-    (base as? Activity)?.recreate()
 }
 
 @Composable
@@ -145,16 +131,15 @@ private fun LanguageChoice(label: String, selected: Boolean, onClick: () -> Unit
 
 @Composable
 private fun LanguageRow() {
-    val context = LocalContext.current
     var current by remember { mutableStateOf(currentLanguageTag()) }
     Row(verticalAlignment = Alignment.CenterVertically) {
         Text(stringResource(R.string.language_title), style = MaterialTheme.typography.titleSmall)
         LanguageChoice(stringResource(R.string.language_arabic), current == "ar") {
-            chooseLanguage(context, "ar")
+            chooseLanguage("ar")
             current = "ar"
         }
         LanguageChoice(stringResource(R.string.language_english), current == "en") {
-            chooseLanguage(context, "en")
+            chooseLanguage("en")
             current = "en"
         }
     }
@@ -162,7 +147,6 @@ private fun LanguageRow() {
 
 @Composable
 private fun LanguageMenu() {
-    val context = LocalContext.current
     var expanded by remember { mutableStateOf(false) }
     var current by remember { mutableStateOf(currentLanguageTag()) }
     TextButton(onClick = { expanded = true }) { Text(stringResource(R.string.language_title)) }
@@ -175,7 +159,7 @@ private fun LanguageMenu() {
                 )
             },
             onClick = {
-                chooseLanguage(context, "ar")
+                chooseLanguage("ar")
                 current = "ar"
                 expanded = false
             },
@@ -188,7 +172,7 @@ private fun LanguageMenu() {
                 )
             },
             onClick = {
-                chooseLanguage(context, "en")
+                chooseLanguage("en")
                 current = "en"
                 expanded = false
             },

@@ -2,6 +2,10 @@
 
 All notable releases of Mi5G Debloat. Versions follow the app `versionName`.
 
+## 0.2.2 — 2026-11-27
+
+- Fixed the in-app language switch so English and Arabic apply immediately to the whole UI, persist across restarts, and update text direction.
+
 ## 0.2.1 — 2026-11-27
 
 - The brand list is a dropdown that always shows the selected list. The detected brand stays as a separate label. The previous horizontal chips could be mis-tapped while scrolling, which made ColorOS packages look unapplied even though the list was working.
