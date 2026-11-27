@@ -23,6 +23,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -31,6 +33,7 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -56,6 +59,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,6 +69,7 @@ import com.midroid.debloat.data.AppItem
 import com.midroid.debloat.data.LogAction
 import com.midroid.debloat.data.LogEntry
 import com.midroid.debloat.data.Tier
+import com.midroid.debloat.data.displayLabel
 import com.midroid.debloat.data.maySelect
 import com.midroid.debloat.data.tierOf
 import com.midroid.debloat.shizuku.ShizukuState
@@ -212,7 +217,7 @@ private fun HomeScreen(vm: MainViewModel) {
         matchesQuery(it.label, it.pkg, query) && (tierFilter == null || it.tier == tierFilter)
     }
     val visibleLog = vm.logEntries.filter {
-        val label = labels[it.pkg] ?: it.pkg
+        val label = displayLabel(labels[it.pkg] ?: it.pkg, it.pkg)
         matchesQuery(label, it.pkg, query) && (tierFilter == null || tierOf(it.pkg) == tierFilter)
     }
 
@@ -278,6 +283,7 @@ private fun HomeScreen(vm: MainViewModel) {
             }
             item {
                 ListControls(
+                    items = vm.items,
                     query = query,
                     onQueryChange = { query = it },
                     tier = tierFilter,
@@ -331,7 +337,23 @@ private fun StatusCard(vm: MainViewModel) {
     }
     Card(Modifier.fillMaxWidth().padding(16.dp)) {
         Column(Modifier.padding(16.dp)) {
-            Text(title, style = MaterialTheme.typography.titleMedium)
+            if (vm.state == ShizukuState.READY) {
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        Icons.Default.Check,
+                        contentDescription = null,
+                        tint = Color(0xFF2E7D32),
+                        modifier = Modifier.size(18.dp),
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(title, style = MaterialTheme.typography.titleMedium)
+                }
+            } else {
+                Text(title, style = MaterialTheme.typography.titleMedium)
+            }
             Text(hint, style = MaterialTheme.typography.bodySmall)
             when (vm.state) {
                 ShizukuState.NOT_INSTALLED -> Button(onClick = {
@@ -344,11 +366,7 @@ private fun StatusCard(vm: MainViewModel) {
                 ShizukuState.NEEDS_PERMISSION -> Button(onClick = vm::requestPermission) {
                     Text(stringResource(R.string.grant_permission))
                 }
-                ShizukuState.READY -> Text(
-                    stringResource(R.string.check_mark),
-                    color = Color(0xFF2E7D32),
-                    style = MaterialTheme.typography.titleLarge,
-                )
+                ShizukuState.READY -> Unit
             }
         }
     }
@@ -367,11 +385,13 @@ private fun tierLabelRes(tier: Tier): Int = when (tier) {
 
 @Composable
 private fun ListControls(
+    items: List<AppItem>,
     query: String,
     onQueryChange: (String) -> Unit,
     tier: Tier?,
     onTierChange: (Tier?) -> Unit,
 ) {
+    val counts = items.groupingBy { it.tier }.eachCount()
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -383,14 +403,16 @@ private fun ListControls(
         FilterChip(
             selected = tier == null,
             onClick = { onTierChange(null) },
-            label = { Text(stringResource(R.string.filter_all)) },
+            label = { Text(stringResource(R.string.filter_count, stringResource(R.string.filter_all), items.size)) },
         )
         Tier.values().forEach {
             Spacer(Modifier.width(8.dp))
             FilterChip(
                 selected = tier == it,
                 onClick = { onTierChange(it) },
-                label = { Text(stringResource(tierLabelRes(it))) },
+                label = {
+                    Text(stringResource(R.string.filter_count, stringResource(tierLabelRes(it)), counts[it] ?: 0))
+                },
             )
         }
     }
@@ -400,6 +422,8 @@ private fun ListControls(
 private fun PackageName(pkg: String) {
     Text(
         "\u2066$pkg\u2069",
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         fontSize = 12.sp,
         style = MaterialTheme.typography.bodySmall.copy(
             fontFamily = FontFamily.Monospace,
@@ -476,7 +500,11 @@ private fun InstalledRow(vm: MainViewModel, item: AppItem) {
             enabled = maySelect(item.tier, vm.allowUnsafe),
         )
         Column(Modifier.weight(1f).padding(vertical = 6.dp)) {
-            Text(item.label)
+            Text(
+                displayLabel(item.label, item.pkg),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
             PackageName(item.pkg)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TierBadge(item.tier)
@@ -533,7 +561,7 @@ private fun LogRow(vm: MainViewModel, entry: LogEntry, labels: Map<String, Strin
             else -> R.string.removed
         }
     )
-    val label = labels[entry.pkg] ?: entry.pkg
+    val label = displayLabel(labels[entry.pkg] ?: entry.pkg, entry.pkg)
     Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
         Text(stringResource(R.string.log_entry, label, date, status))
         if (!entry.restored) {

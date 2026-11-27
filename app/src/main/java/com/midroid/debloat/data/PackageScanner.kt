@@ -17,6 +17,8 @@ fun isSystemApp(flags: Int): Boolean =
     (flags and ApplicationInfo.FLAG_SYSTEM) != 0 ||
         (flags and ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) != 0
 
+fun displayLabel(label: String, pkg: String): String = label.trim().ifEmpty { pkg }
+
 fun scan(context: Context): List<AppItem> {
     val pm = context.packageManager
     val selfPkg = context.packageName
